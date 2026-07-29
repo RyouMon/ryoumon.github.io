@@ -1,7 +1,32 @@
 ---
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { SITE_EMAIL, SITE_GITHUB } from '../consts';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="关于">
-  <h1>关于</h1>
+<BaseLayout title="关于" description="关于 Wen，以及这个个人网站。">
+  <Breadcrumb current="关于" />
+  <header class="page-heading">
+    <h1>关于</h1>
+  </header>
+
+  <article class="prose about-prose">
+    <h2>你好，我是 Wen。</h2>
+    <p>
+      我是一名关心产品体验和技术细节的独立开发者，喜欢把复杂的问题整理成自然、可靠的产品体验。
+    </p>
+    <p>
+      现在主要关注跨平台应用、阅读软件、Local-First
+      架构，以及桌面端与移动端之间的一致性。MyReader
+      是我目前持续投入的项目：一款面向 Calibre 书库的跨平台阅读器。
+    </p>
+    <p>
+      除了写代码，我也会把开发过程中的判断、取舍和答案记录下来。这个网站就是这些项目与记录的长期入口。
+    </p>
+    <h2>联系</h2>
+    <p>
+      你可以在 <a href={SITE_GITHUB}>GitHub</a> 找到我的公开项目，或通过
+      <a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a> 联系我。
+    </p>
+  </article>
 </BaseLayout>

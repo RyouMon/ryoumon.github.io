@@ -1,13 +1,26 @@
 ---
-import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { GitFork, Mail } from '@lucide/astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import {
+  SITE_AUTHOR,
+  SITE_DESCRIPTION,
+  SITE_EMAIL,
+  SITE_GITHUB,
+  SITE_TITLE,
+} from '../consts';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
+  mainClass?: string;
 }
 
-const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
+const {
+  title = SITE_TITLE,
+  description = SITE_DESCRIPTION,
+  mainClass,
+} = Astro.props;
 const documentTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -20,24 +33,48 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <meta name="author" content={SITE_AUTHOR} />
+    <meta property="og:title" content={documentTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta name="theme-color" content="#f7f8ff" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/png" href="/images/avatar.png" />
     <title>{documentTitle}</title>
+    <script is:inline>
+      (() => {
+        const savedTheme = localStorage.getItem('wen-theme');
+        const preferredTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+        document.documentElement.dataset.theme = savedTheme || preferredTheme;
+      })();
+    </script>
   </head>
-  <body>
-    <header>
-      <a class="site-title" href="/">{SITE_TITLE}</a>
-      <nav aria-label="主导航">
-        <a href="/">首页</a>
-        <a href="/blog/">博客</a>
-        <a href="/about/">关于</a>
-      </nav>
-    </header>
-    <main>
+  <body class:list={{ 'home-body': Astro.url.pathname === '/' }}>
+    <a class="skip-link" href="#main-content">跳到正文</a>
+    <SiteHeader />
+    <main id="main-content" class:list={['page-shell', mainClass]}>
       <slot />
     </main>
-    <footer>
-      <small>© {new Date().getFullYear()} {SITE_AUTHOR}</small>
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-intro">
+          <strong>Wen<span aria-hidden="true">.</span></strong>
+          <p>把复杂的技术整理清楚，再做成自然、可靠的产品。</p>
+        </div>
+        <div class="footer-meta">
+          <div class="footer-socials">
+            <a href={SITE_GITHUB} aria-label="GitHub" title="GitHub">
+              <GitFork size={20} stroke-width={2} />
+            </a>
+            <a href={`mailto:${SITE_EMAIL}`} aria-label="发送邮件" title={SITE_EMAIL}>
+              <Mail size={20} stroke-width={2} />
+            </a>
+          </div>
+          <p>© {new Date().getFullYear()} {SITE_AUTHOR}. 保留所有权利。</p>
+        </div>
+      </div>
     </footer>
   </body>
 </html>

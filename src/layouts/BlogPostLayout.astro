@@ -14,13 +14,32 @@ const formattedDate = pubDate
 ---
 
 <BaseLayout title={title} description={description}>
-  <article>
+  <div class="reading-progress" aria-hidden="true">
+    <span data-reading-progress></span>
+  </div>
+  <article class="article-page">
+    <a class="back-link" href="/blog/"><span aria-hidden="true">←</span> 返回文章</a>
     <header class="article-header">
       <h1>{title}</h1>
       {formattedDate && <time datetime={pubDate?.toISOString()}>{formattedDate}</time>}
     </header>
-    <div class="prose">
+    <div class="prose article-content">
       <slot />
     </div>
   </article>
 </BaseLayout>
+
+<script>
+  const progress = document.querySelector<HTMLElement>('[data-reading-progress]');
+
+  const updateReadingProgress = () => {
+    if (!progress) return;
+
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const percentage = height > 0 ? (window.scrollY / height) * 100 : 0;
+    progress.style.width = `${Math.min(100, Math.max(0, percentage))}%`;
+  };
+
+  updateReadingProgress();
+  window.addEventListener('scroll', updateReadingProgress, { passive: true });
+</script>

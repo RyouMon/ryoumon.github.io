@@ -1,0 +1,115 @@
+---
+import { Menu, Moon, Sun, X } from '@lucide/astro';
+import { SITE_TITLE } from '../consts';
+
+const navigation = [
+  { label: '文章', href: '/blog/' },
+  { label: '项目', href: '/projects/' },
+  { label: '标签', href: '/tags/' },
+  { label: '关于', href: '/about/' },
+];
+
+const isActive = (href: string) =>
+  Astro.url.pathname === href || Astro.url.pathname.startsWith(href);
+---
+
+<header class="site-header" data-site-header>
+  <div class="header-inner">
+    <a class="site-title" href="/" aria-label={`${SITE_TITLE} 首页`}>
+      <span aria-hidden="true">W</span><span aria-hidden="true">e</span><span aria-hidden="true">n</span><i
+        aria-hidden="true">.</i
+      >
+    </a>
+
+    <nav class="desktop-nav" aria-label="主导航">
+      <ul>
+        {
+          navigation.map((item) => (
+            <li>
+              <a class:list={{ active: isActive(item.href) }} href={item.href}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换深浅主题">
+            <Moon class="theme-icon-moon" size={22} stroke-width={2} />
+            <Sun class="theme-icon-sun" size={22} stroke-width={2} />
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="打开导航菜单"
+      aria-expanded="false"
+      aria-controls="mobile-navigation"
+      data-menu-toggle
+    >
+      <Menu class="menu-icon-open" size={24} stroke-width={2} />
+      <X class="menu-icon-close" size={24} stroke-width={2} />
+    </button>
+
+    <nav class="mobile-nav" id="mobile-navigation" aria-label="移动端导航">
+      <ul>
+        {
+          navigation.map((item) => (
+            <li>
+              <a class:list={{ active: isActive(item.href) }} href={item.href} data-mobile-link>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <button
+            class="theme-toggle mobile-theme-toggle"
+            type="button"
+            data-theme-toggle
+            aria-label="切换深浅主题"
+          >
+            <Moon class="theme-icon-moon" size={21} stroke-width={2} />
+            <Sun class="theme-icon-sun" size={21} stroke-width={2} />
+            <span>切换主题</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-site-header]');
+  const menuToggle = header?.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+
+  const setMenuOpen = (open: boolean) => {
+    if (!header || !menuToggle) return;
+
+    header.dataset.menuOpen = String(open);
+    menuToggle.setAttribute('aria-expanded', String(open));
+    menuToggle.setAttribute('aria-label', open ? '关闭导航菜单' : '打开导航菜单');
+  };
+
+  menuToggle?.addEventListener('click', () => {
+    setMenuOpen(header?.dataset.menuOpen !== 'true');
+  });
+
+  header?.querySelectorAll('[data-mobile-link]').forEach((link) => {
+    link.addEventListener('click', () => setMenuOpen(false));
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setMenuOpen(false);
+  });
+
+  header?.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = nextTheme;
+      localStorage.setItem('wen-theme', nextTheme);
+    });
+  });
+</script>

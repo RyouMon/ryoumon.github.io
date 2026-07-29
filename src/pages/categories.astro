@@ -1,8 +1,13 @@
 ---
+import Breadcrumb from '../components/Breadcrumb.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="分类">
-  <h1>分类</h1>
-  <p>暂时没有分类。</p>
+<BaseLayout title="分类" description="按分类浏览 Wen 的文章。">
+  <Breadcrumb current="分类" />
+  <header class="page-heading">
+    <h1>分类</h1>
+    <p>按主题浏览文章。</p>
+  </header>
+  <p class="empty-state page-empty-state">新的文章分类会在这里出现。</p>
 </BaseLayout>

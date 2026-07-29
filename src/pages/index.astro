@@ -1,16 +1,163 @@
 ---
+import { getCollection } from 'astro:content';
+import {
+  ArrowRight,
+  BookOpen,
+  GitFork,
+  Mail,
+  Sparkles,
+} from '@lucide/astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { SITE_EMAIL, SITE_GITHUB } from '../consts';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const projects = (await getCollection('projects'))
+  .filter((project) => project.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+const posts = (await getCollection('blog'))
+  .sort((a, b) => (b.data.pubDate?.valueOf() ?? 0) - (a.data.pubDate?.valueOf() ?? 0))
+  .slice(0, 3);
+const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+const topics = ['跨平台应用', '阅读体验', 'Local-First', 'Readium', '开发笔记'];
 ---
 
-<BaseLayout>
-  <section>
-    <img class="avatar" src="/images/avatar.png" alt="Wen 的头像" width="140" height="140" />
-    <h1>闻的博客</h1>
-    <p>个人主页正在重新设计中。</p>
-    <p>
-      <a href="/blog/">浏览博客</a>
-      <span aria-hidden="true"> · </span>
-      <a href="https://github.com/RyouMon">GitHub</a>
-    </p>
+<BaseLayout mainClass="home-page">
+  <section class="playful-hero">
+    <div class="hero-orb hero-orb-one" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb-two" aria-hidden="true"></div>
+
+    <div class="hero-layout">
+      <div class="hero-copy">
+        <p class="hero-kicker">
+          <span aria-hidden="true"></span>
+          Independent developer
+        </p>
+        <h1>
+          <span>你好，我是</span>
+          <strong>Wen.</strong>
+        </h1>
+        <p class="hero-description">
+          我正在构建 MyReader——一款面向 Calibre 书库的 Local-First
+          跨平台阅读器，也在这里记录产品背后的判断、取舍与答案。
+        </p>
+        <div class="hero-actions">
+          <a class="hero-primary-action" href="/projects/">
+            看看我在做什么 <ArrowRight size={19} stroke-width={2.3} />
+          </a>
+          <a class="hero-icon-action" href={SITE_GITHUB} aria-label="GitHub" title="GitHub">
+            <GitFork size={20} stroke-width={2.2} />
+          </a>
+          <a
+            class="hero-icon-action"
+            href={`mailto:${SITE_EMAIL}`}
+            aria-label="发送邮件"
+            title={SITE_EMAIL}
+          >
+            <Mail size={20} stroke-width={2.2} />
+          </a>
+        </div>
+      </div>
+
+      <div class="avatar-stage">
+        <div class="avatar-halo" aria-hidden="true"></div>
+        <div class="avatar-card">
+          <img src="/images/avatar.png" alt="Wen 的 GitHub 头像" width="420" height="420" />
+        </div>
+        <div class="avatar-status">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>NOW BUILDING</span>
+          <strong>MyReader</strong>
+        </div>
+        <div class="avatar-sparkle avatar-sparkle-one" aria-hidden="true">✦</div>
+        <div class="avatar-sparkle avatar-sparkle-two" aria-hidden="true">✦</div>
+      </div>
+    </div>
+
+    <div class="hero-clouds" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
   </section>
+
+  <div class="home-content">
+    <section class="home-introduction">
+      <p class="section-kicker"><Sparkles size={18} stroke-width={2.2} /> CURRENTLY CRAFTING</p>
+      <div>
+        <h2>把复杂的技术，做成自然的产品。</h2>
+        <p>
+          我关心阅读软件、跨平台体验和 Local-First
+          架构。这个网站不只是一份项目清单，也会慢慢长成我的开发札记和个人知识空间。
+        </p>
+      </div>
+    </section>
+
+    {
+      projects.length > 0 && (
+        <section class="showcase-section">
+          <header class="home-section-heading">
+            <div>
+              <p class="section-kicker">SELECTED WORK</p>
+              <h2>正在开发</h2>
+            </div>
+            <a href="/projects/">全部项目 <ArrowRight size={18} stroke-width={2.2} /></a>
+          </header>
+          <ul class="project-showcase">
+            {projects.map((project, index) => (
+              <ProjectCard project={project} index={index} featured={index === 0} />
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <section class="writing-section">
+      <header class="home-section-heading">
+        <div>
+          <p class="section-kicker">WRITING & NOTES</p>
+          <h2>文章与笔记</h2>
+        </div>
+        <a href="/blog/">全部文章 <ArrowRight size={18} stroke-width={2.2} /></a>
+      </header>
+
+      <div class="writing-layout">
+        {
+          posts.length > 0 ? (
+            <ul class="article-card-list">
+              {posts.map((post) => (
+                <li>
+                  <a class="article-card" href={`/blog/${post.id}/`}>
+                    <div class="article-card-icon">
+                      <BookOpen size={23} stroke-width={2} />
+                    </div>
+                    <div>
+                      <time datetime={post.data.pubDate?.toISOString()}>
+                        {post.data.pubDate ? dateFormatter.format(post.data.pubDate) : '旧站存档'}
+                      </time>
+                      <h3>{post.data.title}</h3>
+                      <p>{post.data.description ?? '从旧站迁移保留的文章。'}</p>
+                    </div>
+                    <ArrowRight class="article-card-arrow" size={20} stroke-width={2.2} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="empty-state">新的文章正在准备中。</p>
+          )
+        }
+
+        <aside class="topics-card">
+          <p class="section-kicker">ON MY MIND</p>
+          <h3>最近在关注</h3>
+          <div class="topic-cloud">
+            {topics.map((topic) => <span>{topic}</span>)}
+          </div>
+          <p>这些主题会逐渐变成项目记录、技术文章和长期维护的笔记。</p>
+        </aside>
+      </div>
+    </section>
+  </div>
 </BaseLayout>

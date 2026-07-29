@@ -1,8 +1,13 @@
 ---
+import Breadcrumb from '../components/Breadcrumb.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="标签">
-  <h1>标签</h1>
-  <p>暂时没有标签。</p>
+<BaseLayout title="标签" description="按主题浏览 Wen 的文章。">
+  <Breadcrumb current="标签" />
+  <header class="page-heading">
+    <h1>标签</h1>
+    <p>散落在文章里的主题线索。</p>
+  </header>
+  <p class="empty-state page-empty-state">新的文章标签会在这里出现。</p>
 </BaseLayout>

@@ -1,0 +1,68 @@
+---
+import { ArrowUpRight } from '@lucide/astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  index?: number;
+  featured?: boolean;
+}
+
+const { project, index = 0, featured = false } = Astro.props;
+const projectNumber = String(index + 1).padStart(2, '0');
+const isReader = project.id === 'myreader';
+---
+
+<li class:list={['project-card', { 'project-card-featured': featured }]} data-project={project.id}>
+  <a class="project-card-link" href={`/projects/${project.id}/`}>
+    <div class="project-card-copy">
+      <div class="project-card-eyebrow">
+        <span>{projectNumber}</span>
+        <span>{project.data.status}</span>
+      </div>
+      <h3>{project.data.title}</h3>
+      <p>{project.data.description}</p>
+      <div class="project-card-stack">
+        {project.data.stack.map((item) => <span>{item}</span>)}
+      </div>
+      <span class="project-card-action">
+        查看项目 <ArrowUpRight size={18} stroke-width={2.2} />
+      </span>
+    </div>
+
+    <div class="project-card-preview" aria-hidden="true">
+      {
+        isReader ? (
+          <div class="reader-window">
+            <div class="mock-window-bar">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="reader-window-body">
+              <div class="reader-library">
+                <i></i><i></i><i></i>
+              </div>
+              <div class="reader-document">
+                <b>MyReader</b>
+                <span></span><span></span><span></span><span></span>
+                <small>42%</small>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div class="site-window">
+            <div class="mock-window-bar">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="site-window-body">
+              <b>Wen.</b>
+              <i></i>
+              <span></span>
+              <span></span>
+              <div><em></em><em></em></div>
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </a>
+</li>

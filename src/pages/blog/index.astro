@@ -1,20 +1,39 @@
 ---
 import { getCollection } from 'astro:content';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const posts = (await getCollection('blog')).sort(
   (a, b) => (b.data.pubDate?.valueOf() ?? 0) - (a.data.pubDate?.valueOf() ?? 0),
 );
+const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
 ---
 
-<BaseLayout title="博客">
-  <h1>博客</h1>
-  <ul class="post-list">
+<BaseLayout title="文章" description="Wen 的开发记录、技术实践与长期思考。">
+  <Breadcrumb current="文章" />
+  <header class="page-heading">
+    <h1>文章</h1>
+    <p>开发记录、技术实践，以及一些值得长期保留的思考。</p>
+  </header>
+
+  <ul class="blog-archive-list">
     {
       posts.map((post) => (
         <li>
-          <a href={`/blog/${post.id}/`}>{post.data.title}</a>
-          {post.data.description && <p>{post.data.description}</p>}
+          <a class="blog-archive-card" href={`/blog/${post.id}/`}>
+            <div>
+              <time datetime={post.data.pubDate?.toISOString()}>
+                {post.data.pubDate ? dateFormatter.format(post.data.pubDate) : '旧站存档'}
+              </time>
+              <h2>{post.data.title}</h2>
+              <p>{post.data.description ?? '从旧站迁移保留的文章。'}</p>
+            </div>
+            <span aria-hidden="true">→</span>
+          </a>
         </li>
       ))
     }
