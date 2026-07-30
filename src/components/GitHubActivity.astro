@@ -1,0 +1,152 @@
+---
+import { ExternalLink, GitFork } from '@lucide/astro';
+import {
+  getGitHubContributions,
+  type GitHubContributionDay,
+} from '../lib/github-contributions';
+
+interface Props {
+  username: string;
+}
+
+const { username } = Astro.props;
+const calendar = await getGitHubContributions(username);
+const today = new Date();
+const profileURL = `https://github.com/${encodeURIComponent(username)}`;
+
+function placeholderDays(): GitHubContributionDay[] {
+  const end = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+  const start = new Date(end);
+  start.setUTCDate(start.getUTCDate() - start.getUTCDay() - 52 * 7);
+
+  const days: GitHubContributionDay[] = [];
+  for (const date = new Date(start); date <= end; date.setUTCDate(date.getUTCDate() + 1)) {
+    days.push({
+      date: date.toISOString().slice(0, 10),
+      count: 0,
+      level: 0,
+    });
+  }
+  return days;
+}
+
+const days = calendar?.days ?? placeholderDays();
+const weeks = Array.from({ length: Math.ceil(days.length / 7) }, (_, index) =>
+  days.slice(index * 7, index * 7 + 7),
+);
+const activeDays = days.filter((day) => day.count > 0).length;
+let currentStreak = 0;
+let longestStreak = 0;
+
+for (const day of days) {
+  if (day.count > 0) {
+    currentStreak += 1;
+    longestStreak = Math.max(longestStreak, currentStreak);
+  } else {
+    currentStreak = 0;
+  }
+}
+
+const total = calendar?.total ?? 0;
+const numberFormatter = new Intl.NumberFormat('zh-CN');
+const syncDateFormatter = new Intl.DateTimeFormat('zh-CN', {
+  month: 'short',
+  day: 'numeric',
+  timeZone: 'Asia/Shanghai',
+});
+const cellDateFormatter = new Intl.DateTimeFormat('zh-CN', {
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
+const chartLabel = calendar
+  ? `@${username} 过去一年共有 ${numberFormatter.format(total)} 次 GitHub 贡献，活跃 ${activeDays} 天，最长连续活跃 ${longestStreak} 天。`
+  : `暂时无法同步 @${username} 的 GitHub 活动。`;
+---
+
+<section class="github-activity-section" aria-labelledby="github-activity-title">
+  <header class="home-section-heading">
+    <div>
+      <p class="section-kicker">OPEN SOURCE RHYTHM</p>
+      <h2 id="github-activity-title">GitHub 活动</h2>
+    </div>
+    <a href={profileURL}>
+      @{username} <ExternalLink size={17} stroke-width={2.2} />
+    </a>
+  </header>
+
+  <div class="github-activity-card" data-state={calendar ? 'ready' : 'fallback'}>
+    <div class="github-activity-overview">
+      <div class="github-activity-mark" aria-hidden="true">
+        <GitFork size={27} stroke-width={2} />
+      </div>
+      <div class="github-activity-total">
+        <span>过去一年</span>
+        <strong>{calendar ? numberFormatter.format(total) : '—'}</strong>
+        <small>次贡献</small>
+      </div>
+      <dl class="github-activity-stats">
+        <div>
+          <dt>活跃天数</dt>
+          <dd>{calendar ? numberFormatter.format(activeDays) : '—'}</dd>
+        </div>
+        <div>
+          <dt>最长连续</dt>
+          <dd>{calendar ? `${longestStreak} 天` : '—'}</dd>
+        </div>
+      </dl>
+      <p class="github-activity-sync">
+        {
+          calendar
+            ? `同步于 ${syncDateFormatter.format(calendar.fetchedAt)}`
+            : 'GitHub 数据暂时不可用'
+        }
+      </p>
+    </div>
+
+    <div
+      class="github-contribution-chart"
+      role="img"
+      aria-label={chartLabel}
+      style={`--desktop-weeks: ${weeks.length}; --tablet-weeks: ${Math.min(40, weeks.length)}; --mobile-weeks: ${Math.min(26, weeks.length)};`}
+    >
+      <div class="github-contribution-weeks" aria-hidden="true">
+        {
+          weeks.map((week, weekIndex) => (
+            <div
+              class:list={[
+                'github-contribution-week',
+                {
+                  'github-contribution-week-tablet-hidden': weekIndex < weeks.length - 40,
+                  'github-contribution-week-mobile-hidden': weekIndex < weeks.length - 26,
+                },
+              ]}
+            >
+              {week.map((day) => (
+                <span
+                  class="github-contribution-day"
+                  data-level={day.level}
+                  title={`${cellDateFormatter.format(new Date(`${day.date}T00:00:00Z`))} · ${day.count} 次贡献`}
+                />
+              ))}
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="github-contribution-legend" aria-hidden="true">
+        <span>少</span>
+        {[0, 1, 2, 3, 4].map((level) => (
+          <i data-level={level}></i>
+        ))}
+        <span>多</span>
+      </div>
+    </div>
+
+    <a class="github-activity-profile-link" href={profileURL}>
+      <GitFork size={18} stroke-width={2.1} />
+      查看完整 GitHub 主页
+      <ExternalLink size={15} stroke-width={2.2} />
+    </a>
+  </div>
+</section>

@@ -7,8 +7,9 @@ import {
   Mail,
   Sparkles,
 } from '@lucide/astro';
+import GitHubActivity from '../components/GitHubActivity.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import { SITE_EMAIL, SITE_GITHUB } from '../consts';
+import { SITE_EMAIL, SITE_GITHUB, SITE_GITHUB_USERNAME } from '../consts';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const projects = (await getCollection('projects'))
@@ -93,6 +94,8 @@ const topics = ['跨平台应用', '阅读体验', 'Local-First', 'Readium', '�
         </p>
       </div>
     </section>
+
+    <GitHubActivity username={SITE_GITHUB_USERNAME} />
 
     {
       projects.length > 0 && (
