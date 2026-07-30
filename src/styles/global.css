@@ -674,18 +674,9 @@ img {
   color: var(--accent-strong);
 }
 
-.home-introduction > div h2 {
-  max-width: 15ch;
-  margin: 0;
-  font-size: clamp(2rem, 4.5vw, 3.15rem);
-  font-weight: 840;
-  letter-spacing: -0.055em;
-  line-height: 1.12;
-}
-
 .home-introduction > div p {
   max-width: 47rem;
-  margin: 1.2rem 0 0;
+  margin: 0;
   color: var(--muted-foreground);
   font-size: 1.04rem;
   line-height: 1.85;
