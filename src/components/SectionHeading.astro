@@ -1,0 +1,38 @@
+---
+interface Props {
+  kicker: string;
+  title: string;
+  href: string;
+  actionLabel: string;
+  id?: string;
+}
+
+const { kicker, title, href, actionLabel, id } = Astro.props;
+---
+
+<header
+  class="mb-[1.8rem] flex items-end justify-between gap-6 max-nav:items-start max-[480px]:grid max-[480px]:gap-[0.4rem]"
+>
+  <div>
+    <p
+      class="m-0 flex items-center gap-[0.55rem] text-[0.76rem] leading-[1.3] font-[850] tracking-[0.13em] text-accent-strong uppercase"
+    >
+      {kicker}
+    </p>
+    <h2
+      id={id}
+      class="mt-[0.4rem] mb-0 text-[clamp(2.1rem,5vw,3.25rem)] leading-[1.05] font-[850] tracking-[-0.055em]"
+    >
+      {title}
+    </h2>
+  </div>
+  <a
+    class="group inline-flex shrink-0 items-center gap-[0.4rem] py-2 text-[0.9rem] font-extrabold text-accent-strong no-underline max-nav:mt-5 max-[480px]:mt-[0.2rem]"
+    href={href}
+  >
+    {actionLabel}
+    <span class="transition-transform duration-150 group-hover:translate-x-1">
+      <slot name="action-icon" />
+    </span>
+  </a>
+</header>

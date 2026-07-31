@@ -10,13 +10,16 @@ interface Props {
 const { current, parent } = Astro.props;
 ---
 
-<nav class="breadcrumb" aria-label="面包屑导航">
-  <a href="/" aria-label="返回首页">~</a>
+<nav
+  class="inline-flex flex-wrap items-center gap-[0.42rem] rounded-full bg-accent-soft px-[0.62rem] py-[0.35rem] text-[0.78rem] font-[750] text-accent-strong"
+  aria-label="面包屑导航"
+>
+  <a class="no-underline hover:text-accent" href="/" aria-label="返回首页">~</a>
   <span aria-hidden="true">/</span>
   {
     parent && (
       <>
-        <a href={parent.href}>{parent.label}</a>
+        <a class="no-underline hover:text-accent" href={parent.href}>{parent.label}</a>
         <span aria-hidden="true">/</span>
       </>
     )

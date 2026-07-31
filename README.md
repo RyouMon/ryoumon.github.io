@@ -1,6 +1,9 @@
 # ryoumon.github.io
 
-Wen 的个人主页、项目与博客，使用 Astro 构建。
+Wen 的个人主页、项目与博客，使用 Astro 与 Tailwind CSS 构建。
+
+通用布局、响应式与设计令牌由 Tailwind CSS 统一管理；复杂的品牌视觉保留在对应
+Astro 组件的 scoped CSS 中。
 
 ## 开发
 

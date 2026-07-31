@@ -9,6 +9,7 @@ import {
 } from '@lucide/astro';
 import GitHubActivity from '../components/GitHubActivity.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import SectionHeading from '../components/SectionHeading.astro';
 import { SITE_EMAIL, SITE_GITHUB, SITE_GITHUB_USERNAME } from '../consts';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
@@ -26,34 +27,55 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
 const topics = ['小而美的应用', 'Self-hosted', 'Local-First', '阅读体验', '开发笔记'];
 ---
 
-<BaseLayout mainClass="home-page">
+<BaseLayout>
   <section class="playful-hero">
     <div class="hero-orb hero-orb-one" aria-hidden="true"></div>
     <div class="hero-orb hero-orb-two" aria-hidden="true"></div>
 
     <div class="hero-layout">
-      <div class="hero-copy">
-        <p class="hero-kicker">
-          <span aria-hidden="true"></span>
+      <div class="max-w-[40rem] max-nav:max-w-[36rem]">
+        <p
+          class="m-0 flex items-center gap-[0.55rem] text-[0.76rem] leading-[1.3] font-[850] tracking-[0.13em] text-current/68 uppercase"
+        >
+          <span
+            class="block size-[0.62rem] rounded-full bg-[#24b47e] shadow-[0_0_0_5px_rgb(36_180_126/0.14)]"
+            aria-hidden="true"></span
+          >
           Independent developer
         </p>
-        <h1>
-          <span>你好，我是</span>
-          <strong>Wen.</strong>
+        <h1
+          class="mt-5 mb-[1.35rem] text-[clamp(3.6rem,8vw,6.35rem)] leading-[0.91] font-[860] tracking-[-0.075em] max-tablet:text-[clamp(3.7rem,9vw,5.2rem)] max-nav:text-[clamp(3.5rem,16vw,5rem)] max-[480px]:text-[clamp(3.1rem,17vw,4.2rem)]"
+        >
+          <span
+            class="block text-[0.54em] leading-[1.05] font-[760] tracking-[-0.055em]"
+          >
+            你好，我是
+          </span>
+          <strong class="block text-accent-strong dark:text-accent">Wen.</strong>
         </h1>
-        <p class="hero-description">
+        <p
+          class="m-0 max-w-[40rem] text-[clamp(1rem,2vw,1.16rem)] leading-[1.85] text-[color-mix(in_srgb,var(--hero-ink)_82%,transparent)] max-[480px]:text-[0.97rem]"
+        >
           我正在构建 MyReader——一款面向 Calibre 书库的 Local-First
           跨平台阅读器，也在这里记录产品背后的判断、取舍与答案。
         </p>
-        <div class="hero-actions">
-          <a class="hero-primary-action" href="/projects/">
+        <div class="mt-[1.8rem] flex flex-wrap items-center gap-[0.7rem]">
+          <a
+            class="inline-flex min-h-12 items-center justify-center gap-[0.55rem] rounded-xl bg-accent-strong px-[1.05rem] py-[0.65rem] font-extrabold text-white no-underline shadow-[0_8px_0_color-mix(in_srgb,var(--accent-strong)_58%,#0d1e3a)] transition-[box-shadow,transform] duration-150 hover:translate-y-1 hover:shadow-[0_4px_0_color-mix(in_srgb,var(--accent-strong)_58%,#0d1e3a)] dark:bg-[#7465f2] dark:shadow-[0_8px_0_#453b9a] dark:hover:shadow-[0_4px_0_#453b9a] max-[480px]:w-full"
+            href="/projects/"
+          >
             看看我在做什么 <ArrowRight size={19} stroke-width={2.3} />
           </a>
-          <a class="hero-icon-action" href={SITE_GITHUB} aria-label="GitHub" title="GitHub">
+          <a
+            class="inline-grid size-12 place-items-center rounded-xl border-2 border-hero-ink/15 bg-white/50 text-hero-ink no-underline transition-[background-color,transform] duration-150 hover:-translate-y-[3px] hover:-rotate-3 hover:bg-white/80 dark:bg-[rgb(16_23_38/0.38)] dark:hover:bg-[rgb(16_23_38/0.7)]"
+            href={SITE_GITHUB}
+            aria-label="GitHub"
+            title="GitHub"
+          >
             <GitFork size={20} stroke-width={2.2} />
           </a>
           <a
-            class="hero-icon-action"
+            class="inline-grid size-12 place-items-center rounded-xl border-2 border-hero-ink/15 bg-white/50 text-hero-ink no-underline transition-[background-color,transform] duration-150 hover:-translate-y-[3px] hover:-rotate-3 hover:bg-white/80 dark:bg-[rgb(16_23_38/0.38)] dark:hover:bg-[rgb(16_23_38/0.7)]"
             href={`mailto:${SITE_EMAIL}`}
             aria-label="发送邮件"
             title={SITE_EMAIL}
@@ -83,11 +105,17 @@ const topics = ['小而美的应用', 'Self-hosted', 'Local-First', '阅读体�
     </div>
   </section>
 
-  <div class="home-content">
-    <section class="home-introduction">
-      <p class="section-kicker"><Sparkles size={18} stroke-width={2.2} /> ABOUT</p>
+  <div class="page-frame pt-8 pb-28 max-nav:pt-4 max-nav:pb-20">
+    <section
+      class="grid grid-cols-[minmax(180px,0.36fr)_minmax(0,0.64fr)] items-start gap-[clamp(2rem,7vw,5rem)] border-b border-border pt-12 pb-16 max-nav:grid-cols-1 max-nav:gap-6 max-nav:pt-10 max-nav:pb-14"
+    >
+      <p
+        class="m-0 flex items-center gap-[0.55rem] text-[0.76rem] leading-[1.3] font-[850] tracking-[0.13em] text-accent-strong uppercase"
+      >
+        <Sparkles size={18} stroke-width={2.2} /> ABOUT
+      </p>
       <div>
-        <p>
+        <p class="m-0 max-w-[47rem] text-[1.04rem] leading-[1.85] text-muted-foreground">
           我偏爱小而美的应用、Self-hosted 应用和 Local-First
           应用。这个网站会记录我正在开发的软件、使用过的工具和过程中的想法。
         </p>
@@ -98,15 +126,16 @@ const topics = ['小而美的应用', 'Self-hosted', 'Local-First', '阅读体�
 
     {
       projects.length > 0 && (
-        <section class="showcase-section">
-          <header class="home-section-heading">
-            <div>
-              <p class="section-kicker">SELECTED WORK</p>
-              <h2>正在开发</h2>
-            </div>
-            <a href="/projects/">全部项目 <ArrowRight size={18} stroke-width={2.2} /></a>
-          </header>
-          <ul class="project-showcase">
+        <section class="pt-[clamp(4rem,8vw,6.5rem)]">
+          <SectionHeading
+            kicker="SELECTED WORK"
+            title="正在开发"
+            href="/projects/"
+            actionLabel="全部项目"
+          >
+            <ArrowRight slot="action-icon" size={18} stroke-width={2.2} />
+          </SectionHeading>
+          <ul class="m-0 grid list-none grid-cols-2 gap-[1.3rem] p-0 max-desktop:grid-cols-1 max-desktop:gap-4">
             {projects.map((project, index) => (
               <ProjectCard project={project} index={index} />
             ))}
@@ -115,51 +144,394 @@ const topics = ['小而美的应用', 'Self-hosted', 'Local-First', '阅读体�
       )
     }
 
-    <section class="writing-section">
-      <header class="home-section-heading">
-        <div>
-          <p class="section-kicker">WRITING & NOTES</p>
-          <h2>文章与笔记</h2>
-        </div>
-        <a href="/blog/">全部文章 <ArrowRight size={18} stroke-width={2.2} /></a>
-      </header>
+    <section class="pt-[clamp(4rem,8vw,6.5rem)]">
+      <SectionHeading
+        kicker="WRITING & NOTES"
+        title="文章与笔记"
+        href="/blog/"
+        actionLabel="全部文章"
+      >
+        <ArrowRight slot="action-icon" size={18} stroke-width={2.2} />
+      </SectionHeading>
 
-      <div class="writing-layout">
+      <div
+        class="grid grid-cols-[minmax(0,1.3fr)_minmax(280px,0.7fr)] items-start gap-[1.3rem] max-tablet:grid-cols-1"
+      >
         {
           posts.length > 0 ? (
-            <ul class="article-card-list">
+            <ul class="m-0 grid list-none gap-4 p-0">
               {posts.map((post) => (
                 <li>
-                  <a class="article-card" href={`/blog/${post.id}/`}>
-                    <div class="article-card-icon">
+                  <a
+                    class="group grid grid-cols-[52px_minmax(0,1fr)_24px] items-center gap-4 rounded-[20px] border border-border bg-surface-raised p-[1.3rem] no-underline shadow-card transition-[border-color,box-shadow,transform] duration-[180ms] hover:-translate-y-1 hover:border-accent/45 hover:shadow-card-lift max-[480px]:grid-cols-[44px_minmax(0,1fr)] max-[480px]:p-[1.05rem]"
+                    href={`/blog/${post.id}/`}
+                  >
+                    <div
+                      class="grid size-[52px] -rotate-3 place-items-center rounded-[15px] bg-accent-soft text-accent-strong max-[480px]:size-11"
+                    >
                       <BookOpen size={23} stroke-width={2} />
                     </div>
                     <div>
-                      <time datetime={post.data.pubDate?.toISOString()}>
+                      <time
+                        class="text-[0.73rem] font-[750] text-muted-foreground"
+                        datetime={post.data.pubDate?.toISOString()}
+                      >
                         {post.data.pubDate ? dateFormatter.format(post.data.pubDate) : '旧站存档'}
                       </time>
-                      <h3>{post.data.title}</h3>
-                      <p>{post.data.description ?? '从旧站迁移保留的文章。'}</p>
+                      <h3
+                        class="mt-[0.15rem] mb-0 text-xl leading-tight font-[820] tracking-[-0.025em]"
+                      >
+                        {post.data.title}
+                      </h3>
+                      <p class="mt-[0.35rem] mb-0 text-[0.88rem] leading-[1.65] text-muted-foreground">
+                        {post.data.description ?? '从旧站迁移保留的文章。'}
+                      </p>
                     </div>
-                    <ArrowRight class="article-card-arrow" size={20} stroke-width={2.2} />
+                    <ArrowRight
+                      class="text-accent-strong transition-transform duration-[180ms] group-hover:translate-x-1 max-[480px]:hidden"
+                      size={20}
+                      stroke-width={2.2}
+                    />
                   </a>
                 </li>
               ))}
             </ul>
           ) : (
-            <p class="empty-state">新的文章正在准备中。</p>
+            <p class="text-muted-foreground">新的文章正在准备中。</p>
           )
         }
 
-        <aside class="topics-card">
-          <p class="section-kicker">ON MY MIND</p>
-          <h3>最近在关注</h3>
-          <div class="topic-cloud">
-            {topics.map((topic) => <span>{topic}</span>)}
+        <aside
+          class="rounded-3xl bg-[#252a47] bg-[radial-gradient(circle_at_90%_0%,rgb(169_156_255/0.28),transparent_34%)] p-[1.55rem] text-[#f5f6ff] shadow-card"
+        >
+          <p
+            class="m-0 flex items-center gap-[0.55rem] text-[0.76rem] leading-[1.3] font-[850] tracking-[0.13em] text-[#bdb5ff] uppercase"
+          >
+            ON MY MIND
+          </p>
+          <h3 class="mt-[0.55rem] mb-[1.2rem] text-[1.55rem] tracking-[-0.035em]">
+            最近在关注
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            {
+              topics.map((topic) => (
+                <span class="rounded-full border border-white/12 bg-white/8 px-[0.62rem] py-[0.35rem] text-[0.74rem] font-bold">
+                  {topic}
+                </span>
+              ))
+            }
           </div>
-          <p>这些主题会逐渐变成项目记录、技术文章和长期维护的笔记。</p>
+          <p class="mt-[1.2rem] mb-0 text-[0.83rem] leading-[1.7] text-white/70">
+            这些主题会逐渐变成项目记录、技术文章和长期维护的笔记。
+          </p>
         </aside>
       </div>
     </section>
   </div>
 </BaseLayout>
+
+<style>
+  .playful-hero {
+    position: relative;
+    min-height: 620px;
+    padding: clamp(4.5rem, 8vw, 7rem) 0 9rem;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 14% 20%, rgb(255 255 255 / 0.44) 0 8%, transparent 8.2%),
+      linear-gradient(145deg, var(--sky-start), var(--sky-end));
+    color: var(--hero-ink);
+    isolation: isolate;
+  }
+
+  .hero-layout {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    width: var(--page-frame-width);
+    grid-template-columns: minmax(0, 1.06fr) minmax(330px, 0.94fr);
+    gap: clamp(2rem, 7vw, 6rem);
+    align-items: center;
+    margin-inline: auto;
+  }
+
+  .avatar-stage {
+    position: relative;
+    display: grid;
+    width: min(100%, 420px);
+    min-height: 430px;
+    place-items: center;
+    justify-self: center;
+  }
+
+  .avatar-halo {
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    border: 3px dashed rgb(255 255 255 / 0.48);
+    border-radius: 46% 54% 55% 45% / 48% 42% 58% 52%;
+    animation: slow-spin 28s linear infinite;
+  }
+
+  .avatar-card {
+    position: relative;
+    z-index: 2;
+    width: min(76vw, 296px);
+    overflow: hidden;
+    border: 10px solid rgb(255 255 255 / 0.9);
+    border-radius: 37% 43% 38% 45% / 42% 36% 46% 40%;
+    background: #ededed;
+    box-shadow:
+      0 18px 0 rgb(67 84 127 / 0.12),
+      0 30px 64px rgb(40 68 104 / 0.24);
+    transform: rotate(-3deg);
+    animation: avatar-float 6s ease-in-out infinite;
+  }
+
+  .avatar-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  .avatar-status {
+    position: absolute;
+    z-index: 4;
+    right: -0.5rem;
+    bottom: 2rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.05rem 0.55rem;
+    min-width: 190px;
+    padding: 0.8rem 1rem;
+    border: 2px solid rgb(38 47 78 / 0.09);
+    border-radius: 16px;
+    background: rgb(255 255 255 / 0.92);
+    box-shadow: var(--shadow);
+    color: #262b45;
+    transform: rotate(2deg);
+  }
+
+  .avatar-status .status-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    align-self: center;
+    grid-row: 1 / span 2;
+    border-radius: 50%;
+    background: #24b47e;
+    box-shadow: 0 0 0 4px rgb(36 180 126 / 0.14);
+  }
+
+  .avatar-status > span:not(.status-dot) {
+    color: #727991;
+    font-size: 0.65rem;
+    font-weight: 850;
+    letter-spacing: 0.11em;
+  }
+
+  .avatar-status strong {
+    font-size: 0.95rem;
+  }
+
+  .avatar-sparkle {
+    position: absolute;
+    z-index: 3;
+    color: var(--accent-strong);
+    font-size: 2.3rem;
+    line-height: 1;
+    text-shadow: 0 5px 20px rgb(58 69 137 / 0.2);
+  }
+
+  .avatar-sparkle-one {
+    top: 2.1rem;
+    right: 0.8rem;
+    transform: rotate(14deg);
+  }
+
+  .avatar-sparkle-two {
+    bottom: 5.5rem;
+    left: 0.4rem;
+    color: var(--secondary);
+    font-size: 1.65rem;
+    transform: rotate(-10deg);
+  }
+
+  .hero-orb {
+    position: absolute;
+    z-index: 0;
+    border: 1px solid rgb(255 255 255 / 0.22);
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.12);
+    pointer-events: none;
+  }
+
+  .hero-orb-one {
+    top: -180px;
+    right: 8%;
+    width: 440px;
+    height: 440px;
+  }
+
+  .hero-orb-two {
+    bottom: 5rem;
+    left: -120px;
+    width: 290px;
+    height: 290px;
+  }
+
+  .hero-clouds {
+    position: absolute;
+    z-index: 5;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 110px;
+    pointer-events: none;
+  }
+
+  .hero-clouds::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 56px;
+    background: var(--background);
+    content: "";
+  }
+
+  .hero-clouds span {
+    position: absolute;
+    z-index: 1;
+    bottom: 24px;
+    display: block;
+    border-radius: 50%;
+    background: var(--background);
+  }
+
+  .hero-clouds span:nth-child(1) {
+    left: -4%;
+    width: 28%;
+    height: 92px;
+  }
+
+  .hero-clouds span:nth-child(2) {
+    left: 17%;
+    width: 25%;
+    height: 122px;
+  }
+
+  .hero-clouds span:nth-child(3) {
+    left: 39%;
+    width: 30%;
+    height: 86px;
+  }
+
+  .hero-clouds span:nth-child(4) {
+    right: 12%;
+    width: 27%;
+    height: 132px;
+  }
+
+  .hero-clouds span:nth-child(5) {
+    right: -7%;
+    width: 27%;
+    height: 92px;
+  }
+
+  @keyframes avatar-float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(-3deg);
+    }
+
+    50% {
+      transform: translateY(-12px) rotate(-1.5deg);
+    }
+  }
+
+  @keyframes slow-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hero-layout {
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.78fr);
+      gap: 1.5rem;
+    }
+
+    .avatar-stage {
+      min-height: 380px;
+    }
+
+    .avatar-halo {
+      width: 310px;
+      height: 310px;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .playful-hero {
+      min-height: auto;
+      padding: 4.3rem 0 8.5rem;
+    }
+
+    .hero-layout {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .avatar-stage {
+      width: min(100%, 360px);
+      min-height: 360px;
+    }
+
+    .avatar-halo {
+      width: 295px;
+      height: 295px;
+    }
+
+    .avatar-card {
+      width: min(70vw, 250px);
+    }
+
+    .avatar-status {
+      right: 0;
+      bottom: 1.4rem;
+    }
+
+    .hero-clouds {
+      height: 86px;
+    }
+
+    .hero-clouds::after {
+      height: 44px;
+    }
+
+    .hero-clouds span {
+      bottom: 18px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .avatar-stage {
+      min-height: 330px;
+    }
+
+    .avatar-halo {
+      width: 260px;
+      height: 260px;
+    }
+
+    .avatar-status {
+      right: 50%;
+      bottom: 0.5rem;
+      transform: translateX(50%) rotate(1deg);
+    }
+
+    .avatar-sparkle-one {
+      right: 0;
+    }
+  }
+</style>

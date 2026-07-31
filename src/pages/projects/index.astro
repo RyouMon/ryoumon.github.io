@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import PageHeading from '../../components/PageHeading.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
@@ -11,12 +12,12 @@ const projects = (await getCollection('projects')).sort(
 
 <BaseLayout title="项目" description="Wen 正在开发和持续维护的项目。">
   <Breadcrumb current="项目" />
-  <header class="page-heading">
-    <h1>项目</h1>
-    <p>正在开发、维护或持续思考的产品，以及它们背后的实现选择。</p>
-  </header>
+  <PageHeading
+    title="项目"
+    description="正在开发、维护或持续思考的产品，以及它们背后的实现选择。"
+  />
 
-  <ul class="projects-archive">
+  <ul class="m-0 grid list-none gap-6 p-0">
     {projects.map((project, index) => <ProjectCard project={project} index={index} />)}
   </ul>
 </BaseLayout>

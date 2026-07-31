@@ -1,6 +1,7 @@
 ---
 import { ArrowDown } from '@lucide/astro';
 import { render, type CollectionEntry } from 'astro:content';
+import ProjectInstallCard from './ProjectInstallCard.astro';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -10,17 +11,26 @@ const { project } = Astro.props;
 const { Content } = await render(project);
 ---
 
-<article class="whitenoise-project-page">
-  <a class="back-link whitenoise-back-link" href="/projects/">
-    <span aria-hidden="true">←</span> 返回项目
+<article class="w-full">
+  <a
+    class="group mb-[1.4rem] inline-flex items-center gap-[0.45rem] text-[0.88rem] font-[720] text-muted-foreground no-underline hover:text-accent-strong max-[480px]:mb-4"
+    href="/projects/"
+  >
+    <span class="transition-transform duration-150 group-hover:-translate-x-1" aria-hidden="true">
+      ←
+    </span>
+    返回项目
   </a>
 
-  <header class="whitenoise-product-header">
-    <div class="whitenoise-product-summary">
-      <div class="whitenoise-product-lockup">
+  <header
+    class="overflow-hidden rounded-[30px] border border-accent/20 bg-surface-raised bg-[radial-gradient(circle_at_100%_0%,color-mix(in_srgb,var(--accent)_14%,transparent),transparent_34%)] p-[clamp(1.5rem,4vw,2.7rem)] shadow-card max-nav:rounded-3xl max-nav:p-[1.35rem]"
+  >
+    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-5 max-[600px]:grid-cols-1">
+      <div class="flex min-w-0 items-center gap-5 max-[480px]:items-start max-[480px]:gap-4">
         {
           project.data.icon && (
             <img
+              class="size-24 shrink-0 rounded-[23%] border border-accent/20 shadow-[0_14px_30px_color-mix(in_srgb,var(--foreground)_14%,transparent)] max-tablet:size-20 max-[480px]:size-16"
               src={project.data.icon}
               alt=""
               width="1024"
@@ -29,41 +39,62 @@ const { Content } = await render(project);
             />
           )
         }
-        <div class="whitenoise-product-copy">
-          <div class="whitenoise-product-title">
-            <h1>{project.data.title}</h1>
-            <span>{project.data.status}</span>
+        <div class="min-w-0">
+          <div
+            class="flex flex-wrap items-center gap-x-[0.9rem] gap-y-[0.55rem] max-[480px]:grid max-[480px]:justify-items-start"
+          >
+            <h1
+              class="m-0 text-[clamp(2.5rem,6vw,4.15rem)] leading-none font-[870] tracking-[-0.065em] text-foreground max-[480px]:text-[clamp(2.15rem,11vw,2.8rem)]"
+            >
+              {project.data.title}
+            </h1>
+            <span
+              class="inline-flex rounded-full border border-accent/25 bg-accent-soft px-[0.65rem] py-[0.3rem] text-[0.72rem] font-[780] whitespace-nowrap text-accent-strong"
+            >
+              {project.data.status}
+            </span>
           </div>
-          <p>{project.data.description}</p>
+          <p class="mt-[0.7rem] mb-0 max-w-[42rem] text-[0.93rem] leading-[1.72] text-muted-foreground">
+            {project.data.description}
+          </p>
         </div>
       </div>
 
       {
-        project.data.url && (
-          <a
-            class="whitenoise-store-link"
-            href="#whitenoise-install"
-            aria-label={`前往安装 ${project.data.title}`}
-          >
-            下载
-            <ArrowDown size={18} stroke-width={2.3} />
-          </a>
-        )
-      }
+          project.data.url && (
+            <a
+              class="inline-flex min-h-12 items-center justify-center gap-[0.45rem] self-start rounded-xl bg-accent px-4 py-[0.58rem] text-[0.86rem] font-[820] whitespace-nowrap text-white no-underline shadow-[0_10px_22px_color-mix(in_srgb,var(--accent)_22%,transparent)] hover:bg-accent-strong max-[600px]:justify-self-start max-[480px]:w-full"
+              href="#whitenoise-install"
+              aria-label={`前往安装 ${project.data.title}`}
+            >
+              下载
+              <ArrowDown size={18} stroke-width={2.3} />
+            </a>
+          )
+        }
     </div>
 
-    <section class="whitenoise-screenshots" aria-labelledby="whitenoise-screenshot-title">
-      <h2 id="whitenoise-screenshot-title">应用截图</h2>
+    <section
+      class="mt-9 border-t border-border pt-6"
+      aria-labelledby="whitenoise-screenshot-title"
+    >
+      <h2
+        id="whitenoise-screenshot-title"
+        class="m-0 text-base font-extrabold tracking-[-0.02em]"
+      >
+        应用截图
+      </h2>
       <div
-        class="whitenoise-screenshots-scroller"
+        class="mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-[0.45rem] [overscroll-behavior-inline:contain] [scroll-padding-inline:0] [scrollbar-color:color-mix(in_srgb,var(--accent)_35%,transparent)_transparent] [scrollbar-width:thin] [-webkit-overflow-scrolling:touch]"
         role="region"
         aria-label="WhiteNoise 应用截图，可横向滚动"
         tabindex="0"
       >
         {
           project.data.screenshots.map((screenshot, index) => (
-            <figure>
+            <figure class="m-0 shrink-0 basis-[clamp(16rem,34vw,24rem)] snap-start overflow-hidden rounded-[22px] border border-accent/20 bg-accent-soft shadow-[0_10px_24px_color-mix(in_srgb,var(--foreground)_11%,transparent)] max-[480px]:basis-[min(72vw,15.5rem)]">
               <img
+                class="block h-auto w-full"
                 src={screenshot.src}
                 alt={screenshot.alt}
                 width="830"
@@ -78,58 +109,17 @@ const { Content } = await render(project);
     </section>
   </header>
 
-  <div class="prose article-content whitenoise-article-content">
+  <div class="prose mt-[clamp(3.5rem,7vw,5rem)] w-full">
     <Content />
   </div>
 
   {
     project.data.url && project.data.qrCode && (
-      <section
+      <ProjectInstallCard
+        project={project}
         id="whitenoise-install"
-        class="project-install-card whitenoise-install-card"
-        aria-labelledby="whitenoise-install-heading"
-      >
-        <div class="project-install-copy">
-          <div class="project-install-identity">
-            {
-              project.data.icon && (
-                <img
-                  src={project.data.icon}
-                  alt=""
-                  width="1024"
-                  height="1024"
-                  loading="lazy"
-                />
-              )
-            }
-            <div>
-              <p>AVAILABLE ON THE APP STORE</p>
-              <h2 id="whitenoise-install-heading">安装 {project.data.title}</h2>
-            </div>
-          </div>
-          <p>点击按钮前往 App Store，或使用 iPhone / iPad 相机扫描二维码。</p>
-          <a href={project.data.url} target="_blank" rel="noreferrer">
-            {project.data.urlLabel ?? '前往 App Store'}
-            <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-        <a
-          class="project-install-qr"
-          href={project.data.url}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`${project.data.urlLabel ?? '前往 App Store'}：${project.data.title}`}
-        >
-          <img
-            src={project.data.qrCode}
-            alt={project.data.qrCodeAlt ?? `${project.data.title} App Store 安装二维码`}
-            width="512"
-            height="512"
-            loading="lazy"
-          />
-          <span>扫码安装</span>
-        </a>
-      </section>
+        class="mt-[clamp(5rem,9vw,7rem)] scroll-mt-28"
+      />
     )
   }
 </article>

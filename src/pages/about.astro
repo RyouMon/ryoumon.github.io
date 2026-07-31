@@ -1,17 +1,16 @@
 ---
 import Breadcrumb from '../components/Breadcrumb.astro';
+import PageHeading from '../components/PageHeading.astro';
 import { SITE_EMAIL, SITE_GITHUB } from '../consts';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="关于" description="关于 Wen，以及这个个人网站。">
   <Breadcrumb current="关于" />
-  <header class="page-heading">
-    <h1>关于</h1>
-  </header>
+  <PageHeading title="关于" />
 
-  <article class="prose about-prose">
-    <h2>你好，我是 Wen。</h2>
+  <article class="prose pb-8">
+    <h2 class="mt-0! text-[2rem]! text-accent-strong!">你好，我是 Wen。</h2>
     <p>
       我是一名独立开发者，偏爱小而美的应用、Self-hosted 应用和 Local-First 应用。
     </p>

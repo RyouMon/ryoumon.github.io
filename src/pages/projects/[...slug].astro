@@ -1,6 +1,7 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectInstallCard from '../../components/ProjectInstallCard.astro';
 import WhiteNoiseProjectDetail from '../../components/WhiteNoiseProjectDetail.astro';
 
 export async function getStaticPaths() {
@@ -24,81 +25,74 @@ const isWhiteNoise = project.id === 'whitenoise';
     isWhiteNoise ? (
       <WhiteNoiseProjectDetail project={project} />
     ) : (
-      <article class="article-page">
-        <a class="back-link" href="/projects/"><span aria-hidden="true">←</span> 返回项目</a>
+      <article class="w-full">
+        <a
+          class="group mb-[2.7rem] inline-flex items-center gap-[0.45rem] text-[0.88rem] font-[720] text-muted-foreground no-underline hover:text-accent-strong"
+          href="/projects/"
+        >
+          <span
+            class="transition-transform duration-150 group-hover:-translate-x-1"
+            aria-hidden="true"
+          >
+            ←
+          </span>
+          返回项目
+        </a>
 
-        <header class="article-header">
-          <h1>{project.data.title}</h1>
-          <p>{project.data.description}</p>
-          <div class="project-meta">
+        <header>
+          <h1
+            class="m-0 inline-block text-[clamp(2.5rem,7vw,4.25rem)] leading-[1.02] font-[860] tracking-[-0.065em] text-accent-strong"
+          >
+            {project.data.title}
+          </h1>
+          <p class="mt-4 mb-0 max-w-[42rem] text-[1.03rem] leading-[1.8] text-muted-foreground">
+            {project.data.description}
+          </p>
+          <div class="mt-[0.9rem] flex flex-wrap gap-[0.55rem] text-[0.84rem] font-[720] text-muted-foreground">
             <span>{project.data.status}</span>
-            {project.data.stack.length > 0 && <span>{project.data.stack.join(' · ')}</span>}
+            {
+              project.data.stack.length > 0 && (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <span>{project.data.stack.join(' · ')}</span>
+                </>
+              )
+            }
           </div>
         </header>
 
-        <div class="prose article-content">
+        <div class="prose mt-10">
           <Content />
         </div>
 
         {
           project.data.url && project.data.qrCode ? (
             <>
-              <hr class="article-divider" />
-              <section class="project-install-card" aria-labelledby="project-install-heading">
-                <div class="project-install-copy">
-                  <div class="project-install-identity">
-                    {
-                      project.data.icon && (
-                        <img
-                          src={project.data.icon}
-                          alt=""
-                          width="1024"
-                          height="1024"
-                          loading="lazy"
-                        />
-                      )
-                    }
-                    <div>
-                      <p>AVAILABLE ON THE APP STORE</p>
-                      <h2 id="project-install-heading">安装 {project.data.title}</h2>
-                    </div>
-                  </div>
-                  <p>点击按钮前往 App Store，或使用 iPhone / iPad 相机扫描二维码。</p>
-                  <a href={project.data.url} target="_blank" rel="noreferrer">
-                    {project.data.urlLabel ?? '前往 App Store'}
-                    <span aria-hidden="true">↗</span>
-                  </a>
-                </div>
-                <a
-                  class="project-install-qr"
-                  href={project.data.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`${project.data.urlLabel ?? '前往 App Store'}：${project.data.title}`}
-                >
-                  <img
-                    src={project.data.qrCode}
-                    alt={project.data.qrCodeAlt ?? `${project.data.title} App Store 安装二维码`}
-                    width="512"
-                    height="512"
-                    loading="lazy"
-                  />
-                  <span>扫码安装</span>
-                </a>
-              </section>
+              <hr class="my-[2.3rem] border-0 border-t border-dashed border-border" />
+              <ProjectInstallCard project={project} />
             </>
           ) : (
             (project.data.url || project.data.repository) && (
               <>
-                <hr class="article-divider" />
-                <div class="project-actions">
+                <hr class="my-[2.3rem] border-0 border-t border-dashed border-border" />
+                <div class="flex flex-wrap gap-[0.8rem]">
                   {project.data.url && (
-                    <a href={project.data.url} target="_blank" rel="noreferrer">
+                    <a
+                      class="inline-flex min-h-[2.7rem] items-center rounded-[10px] bg-accent-soft px-[0.85rem] py-[0.45rem] font-extrabold text-accent-strong no-underline transition-transform hover:-translate-y-0.5"
+                      href={project.data.url}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       {project.data.urlLabel ?? '访问项目'} <span aria-hidden="true">↗</span>
                     </a>
                   )}
                   {project.data.repository && (
-                    <a href={project.data.repository} target="_blank" rel="noreferrer">
+                    <a
+                      class="inline-flex min-h-[2.7rem] items-center rounded-[10px] bg-accent-soft px-[0.85rem] py-[0.45rem] font-extrabold text-accent-strong no-underline transition-transform hover:-translate-y-0.5"
+                      href={project.data.repository}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       查看源码 <span aria-hidden="true">↗</span>
                     </a>
                   )}

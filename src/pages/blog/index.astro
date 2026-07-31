@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import PageHeading from '../../components/PageHeading.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const posts = (await getCollection('blog')).sort(
@@ -15,24 +16,36 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
 
 <BaseLayout title="文章" description="Wen 的开发记录、技术实践与长期思考。">
   <Breadcrumb current="文章" />
-  <header class="page-heading">
-    <h1>文章</h1>
-    <p>开发记录、技术实践，以及一些值得长期保留的思考。</p>
-  </header>
+  <PageHeading title="文章" description="开发记录、技术实践，以及一些值得长期保留的思考。" />
 
-  <ul class="blog-archive-list">
+  <ul class="m-0 grid list-none gap-4 p-0">
     {
       posts.map((post) => (
         <li>
-          <a class="blog-archive-card" href={`/blog/${post.id}/`}>
+          <a
+            class="group flex items-center justify-between gap-8 rounded-[20px] border border-border bg-surface-raised px-[1.6rem] py-6 no-underline shadow-card transition-[border-color,box-shadow,transform] duration-[180ms] hover:-translate-y-1 hover:border-accent/45 hover:shadow-card-lift max-[480px]:p-5"
+            href={`/blog/${post.id}/`}
+          >
             <div>
-              <time datetime={post.data.pubDate?.toISOString()}>
+              <time
+                class="text-[0.73rem] font-[750] text-muted-foreground"
+                datetime={post.data.pubDate?.toISOString()}
+              >
                 {post.data.pubDate ? dateFormatter.format(post.data.pubDate) : '旧站存档'}
               </time>
-              <h2>{post.data.title}</h2>
-              <p>{post.data.description ?? '从旧站迁移保留的文章。'}</p>
+              <h2
+                class="mt-1 mb-0 text-[1.4rem] leading-tight font-[820] tracking-[-0.035em] text-foreground"
+              >
+                {post.data.title}
+              </h2>
+              <p class="mt-[0.45rem] mb-0 text-[0.9rem] text-muted-foreground">
+                {post.data.description ?? '从旧站迁移保留的文章。'}
+              </p>
             </div>
-            <span aria-hidden="true">→</span>
+            <span
+              class="text-[1.45rem] text-accent-strong transition-transform duration-[180ms] group-hover:translate-x-[5px] max-[480px]:hidden"
+              aria-hidden="true">→</span
+            >
           </a>
         </li>
       ))

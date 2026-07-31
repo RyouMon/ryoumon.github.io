@@ -11,54 +11,43 @@ const navigation = [
 
 const isActive = (href: string) =>
   Astro.url.pathname === href || Astro.url.pathname.startsWith(href);
+const navLinkClass =
+  'block rounded-full px-3 py-2 text-[0.93rem] font-[720] no-underline transition-[color,background-color,transform] duration-150 hover:-translate-y-px hover:bg-accent-soft hover:text-accent-strong';
+const iconButtonClass =
+  'inline-grid size-[2.45rem] cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 text-foreground transition-[color,background-color,transform] duration-150 hover:-rotate-6 hover:bg-accent-soft hover:text-accent-strong';
 ---
 
-<header class="site-header" data-site-header>
-  <div class="header-inner">
-    <a class="site-title" href="/" aria-label={`${SITE_TITLE} 首页`}>
-      <span aria-hidden="true">W</span><span aria-hidden="true">e</span><span aria-hidden="true">n</span><i
+<header
+  class="sticky top-0 z-100 w-full border-b border-border/80 bg-[color-mix(in_srgb,var(--background)_86%,transparent)] backdrop-blur-[18px]"
+  data-site-header
+>
+  <div class="page-frame flex min-h-[76px] items-center max-nav:min-h-[66px] max-nav:flex-wrap">
+    <a
+      class="inline-flex shrink-0 items-baseline py-[0.3rem] text-[1.6rem] leading-none font-[850] tracking-[-0.08em] text-foreground no-underline hover:text-accent-strong max-nav:text-[1.4rem]"
+      href="/"
+      aria-label={`${SITE_TITLE} 首页`}
+    >
+      <span class="-rotate-4" aria-hidden="true">W</span><span
+        class="-translate-y-px text-accent"
+        aria-hidden="true">e</span
+      ><span class="rotate-3" aria-hidden="true">n</span><i
+        class="ml-[0.04em] text-[1.2em] font-normal text-secondary not-italic"
         aria-hidden="true">.</i
       >
     </a>
 
-    <nav class="desktop-nav" aria-label="主导航">
-      <ul>
+    <nav class="ml-auto max-nav:hidden" aria-label="主导航">
+      <ul class="m-0 flex list-none items-center gap-[0.3rem] p-0">
         {
           navigation.map((item) => (
             <li>
-              <a class:list={{ active: isActive(item.href) }} href={item.href}>
-                {item.label}
-              </a>
-            </li>
-          ))
-        }
-        <li>
-          <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换深浅主题">
-            <Moon class="theme-icon-moon" size={22} stroke-width={2} />
-            <Sun class="theme-icon-sun" size={22} stroke-width={2} />
-          </button>
-        </li>
-      </ul>
-    </nav>
-
-    <button
-      class="menu-toggle"
-      type="button"
-      aria-label="打开导航菜单"
-      aria-expanded="false"
-      aria-controls="mobile-navigation"
-      data-menu-toggle
-    >
-      <Menu class="menu-icon-open" size={24} stroke-width={2} />
-      <X class="menu-icon-close" size={24} stroke-width={2} />
-    </button>
-
-    <nav class="mobile-nav" id="mobile-navigation" aria-label="移动端导航">
-      <ul>
-        {
-          navigation.map((item) => (
-            <li>
-              <a class:list={{ active: isActive(item.href) }} href={item.href} data-mobile-link>
+              <a
+                class:list={[
+                  navLinkClass,
+                  { 'bg-accent-soft text-accent-strong': isActive(item.href) },
+                ]}
+                href={item.href}
+              >
                 {item.label}
               </a>
             </li>
@@ -66,13 +55,63 @@ const isActive = (href: string) =>
         }
         <li>
           <button
-            class="theme-toggle mobile-theme-toggle"
+            class={iconButtonClass}
             type="button"
             data-theme-toggle
             aria-label="切换深浅主题"
           >
-            <Moon class="theme-icon-moon" size={21} stroke-width={2} />
-            <Sun class="theme-icon-sun" size={21} stroke-width={2} />
+            <Moon class="block dark:hidden" size={22} stroke-width={2} />
+            <Sun class="hidden dark:block" size={22} stroke-width={2} />
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <button
+      class:list={[iconButtonClass, 'ml-auto hidden max-nav:inline-grid']}
+      type="button"
+      aria-label="打开导航菜单"
+      aria-expanded="false"
+      aria-controls="mobile-navigation"
+      data-menu-toggle
+    >
+      <Menu data-menu-icon-open size={24} stroke-width={2} />
+      <X class="hidden" data-menu-icon-close size={24} stroke-width={2} />
+    </button>
+
+    <nav
+      class="hidden w-full pt-[0.4rem] pb-4"
+      id="mobile-navigation"
+      data-mobile-navigation
+      aria-label="移动端导航"
+    >
+      <ul class="m-0 grid list-none grid-cols-2 items-center gap-[0.4rem] p-0">
+        {
+          navigation.map((item) => (
+            <li class="min-w-0">
+              <a
+                class:list={[
+                  navLinkClass,
+                  'min-h-[2.8rem] w-full px-[0.8rem] py-[0.7rem] text-center',
+                  { 'bg-accent-soft text-accent-strong': isActive(item.href) },
+                ]}
+                href={item.href}
+                data-mobile-link
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <button
+            class="flex min-h-[2.8rem] w-full cursor-pointer items-center justify-center gap-[0.45rem] rounded-full border-0 bg-transparent px-[0.8rem] py-[0.7rem] text-foreground transition-colors hover:bg-accent-soft hover:text-accent-strong"
+            type="button"
+            data-theme-toggle
+            aria-label="切换深浅主题"
+          >
+            <Moon class="block dark:hidden" size={21} stroke-width={2} />
+            <Sun class="hidden dark:block" size={21} stroke-width={2} />
             <span>切换主题</span>
           </button>
         </li>
@@ -80,6 +119,20 @@ const isActive = (href: string) =>
     </nav>
   </div>
 </header>
+
+<style>
+  [data-site-header][data-menu-open="true"] [data-mobile-navigation] {
+    display: block;
+  }
+
+  [data-site-header][data-menu-open="true"] [data-menu-icon-open] {
+    display: none;
+  }
+
+  [data-site-header][data-menu-open="true"] [data-menu-icon-close] {
+    display: block;
+  }
+</style>
 
 <script>
   const header = document.querySelector<HTMLElement>('[data-site-header]');
