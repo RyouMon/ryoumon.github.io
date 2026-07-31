@@ -19,11 +19,7 @@ const { Content } = await render(project);
 const isWhiteNoise = project.id === 'whitenoise';
 ---
 
-<BaseLayout
-  title={project.data.title}
-  description={project.data.description}
-  mainClass={isWhiteNoise ? 'product-detail-page-shell' : undefined}
->
+<BaseLayout title={project.data.title} description={project.data.description}>
   {
     isWhiteNoise ? (
       <WhiteNoiseProjectDetail project={project} />

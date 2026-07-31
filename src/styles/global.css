@@ -27,8 +27,12 @@
   --shadow-lift:
     0 3px 8px rgb(40 42 75 / 0.08),
     0 24px 52px rgb(68 71 120 / 0.16);
-  --content-width: 58rem;
-  --wide-width: 72rem;
+  --page-content-width: 72rem;
+  --page-gutter: 1.5rem;
+  --page-frame-width: min(
+    calc(100% - var(--page-gutter) - var(--page-gutter)),
+    var(--page-content-width)
+  );
   --font-ui:
     ui-rounded,
     "SF Pro Rounded",
@@ -162,7 +166,6 @@ img {
   z-index: 100;
   top: 0;
   width: 100%;
-  padding-inline: 1.5rem;
   border-bottom: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
   background: color-mix(in srgb, var(--background) 86%, transparent);
   backdrop-filter: blur(18px);
@@ -170,7 +173,7 @@ img {
 
 .header-inner {
   display: flex;
-  width: min(100%, var(--wide-width));
+  width: var(--page-frame-width);
   min-height: 76px;
   align-items: center;
   margin-inline: auto;
@@ -300,11 +303,11 @@ img {
 /* Shared page frame */
 
 .page-shell {
-  width: min(100%, var(--content-width));
+  width: var(--page-frame-width);
   min-height: 60vh;
   flex: 1;
   margin-inline: auto;
-  padding: 3rem 1.5rem 6rem;
+  padding: 3rem 0 6rem;
 }
 
 .page-shell.home-page {
@@ -318,7 +321,7 @@ img {
 .playful-hero {
   position: relative;
   min-height: 620px;
-  padding: clamp(4.5rem, 8vw, 7rem) 1.5rem 9rem;
+  padding: clamp(4.5rem, 8vw, 7rem) 0 9rem;
   overflow: hidden;
   background:
     radial-gradient(circle at 14% 20%, rgb(255 255 255 / 0.44) 0 8%, transparent 8.2%),
@@ -331,7 +334,7 @@ img {
   position: relative;
   z-index: 3;
   display: grid;
-  width: min(100%, var(--wide-width));
+  width: var(--page-frame-width);
   grid-template-columns: minmax(0, 1.06fr) minmax(330px, 0.94fr);
   gap: clamp(2rem, 7vw, 6rem);
   align-items: center;
@@ -656,9 +659,9 @@ img {
 /* Homepage content */
 
 .home-content {
-  width: min(100%, var(--wide-width));
+  width: var(--page-frame-width);
   margin-inline: auto;
-  padding: 2rem 1.5rem 7rem;
+  padding: 2rem 0 7rem;
 }
 
 .home-introduction {
@@ -1541,8 +1544,7 @@ img {
 }
 
 .article-page {
-  width: min(100%, 48rem);
-  margin-inline: auto;
+  width: 100%;
 }
 
 .back-link {
@@ -1614,10 +1616,6 @@ img {
 }
 
 /* WhiteNoise product detail */
-
-.page-shell.product-detail-page-shell {
-  width: min(100%, calc(var(--wide-width) + 3rem));
-}
 
 .whitenoise-project-page {
   width: 100%;
@@ -2122,14 +2120,13 @@ img {
 .site-footer {
   width: 100%;
   margin-top: auto;
-  padding: 0 1.5rem;
   background: var(--footer);
   color: var(--footer-foreground);
 }
 
 .footer-inner {
   display: grid;
-  width: min(100%, var(--wide-width));
+  width: var(--page-frame-width);
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 2rem;
   align-items: end;
@@ -2257,8 +2254,8 @@ img {
 }
 
 @media (max-width: 720px) {
-  .site-header {
-    padding-inline: 1rem;
+  :root {
+    --page-gutter: 1rem;
   }
 
   .header-inner {
@@ -2323,18 +2320,12 @@ img {
   }
 
   .page-shell {
-    padding: 2.3rem 1.1rem 4.5rem;
-  }
-
-  .page-shell.product-detail-page-shell {
-    padding-top: 1.8rem;
-    padding-right: 1rem;
-    padding-left: 1rem;
+    padding: 2.3rem 0 4.5rem;
   }
 
   .playful-hero {
     min-height: auto;
-    padding: 4.3rem 1.15rem 8.5rem;
+    padding: 4.3rem 0 8.5rem;
   }
 
   .hero-layout {
@@ -2382,7 +2373,7 @@ img {
   }
 
   .home-content {
-    padding: 1rem 1.1rem 5rem;
+    padding: 1rem 0 5rem;
   }
 
   .home-introduction {
