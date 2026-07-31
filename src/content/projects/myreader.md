@@ -3,12 +3,16 @@ title: MyReader
 description: 面向 Calibre 书库的 Local-First 跨平台阅读器，在桌面端与移动端提供一致、可靠的阅读体验。
 status: 持续开发
 featured: true
-order: 1
+order: 2
 stack:
   - Tauri
   - Rust
   - Expo
   - Readium
+tags:
+  - Local-First
+  - 跨平台
+  - 阅读器
 ---
 
 MyReader 是一款面向 Calibre 书库的 Local-First 跨平台阅读器。它让本地书库继续由用户掌控，同时在桌面端和移动端提供统一的阅读数据与产品体验。

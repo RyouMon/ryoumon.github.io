@@ -5,25 +5,28 @@ import type { CollectionEntry } from 'astro:content';
 interface Props {
   project: CollectionEntry<'projects'>;
   index?: number;
-  featured?: boolean;
 }
 
-const { project, index = 0, featured = false } = Astro.props;
+const { project, index = 0 } = Astro.props;
 const projectNumber = String(index + 1).padStart(2, '0');
 const isReader = project.id === 'myreader';
+const isWhiteNoise = project.id === 'whitenoise';
+const cardImage = project.data.cardImage;
+const cardImageDark = project.data.cardImageDark;
 ---
 
-<li class:list={['project-card', { 'project-card-featured': featured }]} data-project={project.id}>
+<li class="project-card" data-project={project.id}>
   <a class="project-card-link" href={`/projects/${project.id}/`}>
     <div class="project-card-copy">
       <div class="project-card-eyebrow">
         <span>{projectNumber}</span>
-        <span>{project.data.status}</span>
       </div>
-      <h3>{project.data.title}</h3>
+      <div class="project-card-title">
+        <h3>{project.data.title}</h3>
+      </div>
       <p>{project.data.description}</p>
-      <div class="project-card-stack">
-        {project.data.stack.map((item) => <span>{item}</span>)}
+      <div class="project-card-tags">
+        {project.data.tags.map((tag) => <span>{tag}</span>)}
       </div>
       <span class="project-card-action">
         查看项目 <ArrowUpRight size={18} stroke-width={2.2} />
@@ -48,21 +51,40 @@ const isReader = project.id === 'myreader';
               </div>
             </div>
           </div>
+        ) : isWhiteNoise ? (
+          <div class="whitenoise-preview">
+            {
+              cardImage && (
+                <img
+                  class="whitenoise-preview-image whitenoise-preview-image-light"
+                  src={cardImage}
+                  alt=""
+                  width="645"
+                  height="1333"
+                  loading="lazy"
+                />
+              )
+            }
+            {
+              cardImageDark && (
+                <img
+                  class="whitenoise-preview-image whitenoise-preview-image-dark"
+                  src={cardImageDark}
+                  alt=""
+                  width="661"
+                  height="1405"
+                  loading="lazy"
+                />
+              )
+            }
+          </div>
         ) : (
-          <div class="site-window">
-            <div class="mock-window-bar">
-              <span></span><span></span><span></span>
-            </div>
-            <div class="site-window-body">
-              <b>Wen.</b>
-              <i></i>
-              <span></span>
-              <span></span>
-              <div><em></em><em></em></div>
-            </div>
+          <div class="project-generic-preview">
+            <strong>{project.data.title}</strong>
           </div>
         )
       }
     </div>
+    <span class="project-card-status">{project.data.status}</span>
   </a>
 </li>

@@ -1,6 +1,7 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import WhiteNoiseProjectDetail from '../../components/WhiteNoiseProjectDetail.astro';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -15,39 +16,102 @@ type Props = CollectionEntry<'projects'>;
 
 const project = Astro.props;
 const { Content } = await render(project);
+const isWhiteNoise = project.id === 'whitenoise';
 ---
 
-<BaseLayout title={project.data.title} description={project.data.description}>
-  <article class="article-page">
-    <a class="back-link" href="/projects/"><span aria-hidden="true">←</span> 返回项目</a>
+<BaseLayout
+  title={project.data.title}
+  description={project.data.description}
+  mainClass={isWhiteNoise ? 'product-detail-page-shell' : undefined}
+>
+  {
+    isWhiteNoise ? (
+      <WhiteNoiseProjectDetail project={project} />
+    ) : (
+      <article class="article-page">
+        <a class="back-link" href="/projects/"><span aria-hidden="true">←</span> 返回项目</a>
 
-    <header class="article-header">
-      <h1>{project.data.title}</h1>
-      <p>{project.data.description}</p>
-      <div class="project-meta">
-        <span>{project.data.status}</span>
-        {project.data.stack.length > 0 && <span>{project.data.stack.join(' · ')}</span>}
-      </div>
-    </header>
-
-    <div class="prose article-content">
-      <Content />
-    </div>
-
-    {
-      (project.data.url || project.data.repository) && (
-        <>
-          <hr class="article-divider" />
-          <div class="project-actions">
-            {project.data.url && (
-              <a href={project.data.url}>访问项目 <span aria-hidden="true">↗</span></a>
-            )}
-            {project.data.repository && (
-              <a href={project.data.repository}>查看源码 <span aria-hidden="true">↗</span></a>
-            )}
+        <header class="article-header">
+          <h1>{project.data.title}</h1>
+          <p>{project.data.description}</p>
+          <div class="project-meta">
+            <span>{project.data.status}</span>
+            {project.data.stack.length > 0 && <span>{project.data.stack.join(' · ')}</span>}
           </div>
-        </>
-      )
-    }
-  </article>
+        </header>
+
+        <div class="prose article-content">
+          <Content />
+        </div>
+
+        {
+          project.data.url && project.data.qrCode ? (
+            <>
+              <hr class="article-divider" />
+              <section class="project-install-card" aria-labelledby="project-install-heading">
+                <div class="project-install-copy">
+                  <div class="project-install-identity">
+                    {
+                      project.data.icon && (
+                        <img
+                          src={project.data.icon}
+                          alt=""
+                          width="1024"
+                          height="1024"
+                          loading="lazy"
+                        />
+                      )
+                    }
+                    <div>
+                      <p>AVAILABLE ON THE APP STORE</p>
+                      <h2 id="project-install-heading">安装 {project.data.title}</h2>
+                    </div>
+                  </div>
+                  <p>点击按钮前往 App Store，或使用 iPhone / iPad 相机扫描二维码。</p>
+                  <a href={project.data.url} target="_blank" rel="noreferrer">
+                    {project.data.urlLabel ?? '前往 App Store'}
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+                <a
+                  class="project-install-qr"
+                  href={project.data.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${project.data.urlLabel ?? '前往 App Store'}：${project.data.title}`}
+                >
+                  <img
+                    src={project.data.qrCode}
+                    alt={project.data.qrCodeAlt ?? `${project.data.title} App Store 安装二维码`}
+                    width="512"
+                    height="512"
+                    loading="lazy"
+                  />
+                  <span>扫码安装</span>
+                </a>
+              </section>
+            </>
+          ) : (
+            (project.data.url || project.data.repository) && (
+              <>
+                <hr class="article-divider" />
+                <div class="project-actions">
+                  {project.data.url && (
+                    <a href={project.data.url} target="_blank" rel="noreferrer">
+                      {project.data.urlLabel ?? '访问项目'} <span aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                  {project.data.repository && (
+                    <a href={project.data.repository} target="_blank" rel="noreferrer">
+                      查看源码 <span aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                </div>
+              </>
+            )
+          )
+        }
+      </article>
+    )
+  }
 </BaseLayout>

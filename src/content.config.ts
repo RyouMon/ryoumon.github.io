@@ -20,7 +20,22 @@ const projects = defineCollection({
     featured: z.boolean().default(false),
     order: z.number().default(0),
     stack: z.array(z.string()).default([]),
+    tags: z.array(z.string()).default([]),
+    icon: z.string().optional(),
+    cardImage: z.string().optional(),
+    cardImageDark: z.string().optional(),
     url: z.string().optional(),
+    urlLabel: z.string().optional(),
+    qrCode: z.string().optional(),
+    qrCodeAlt: z.string().optional(),
+    screenshots: z
+      .array(
+        z.object({
+          src: z.string(),
+          alt: z.string(),
+        }),
+      )
+      .default([]),
     repository: z.string().optional(),
   }),
 });
