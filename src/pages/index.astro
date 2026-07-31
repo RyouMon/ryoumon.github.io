@@ -3,11 +3,11 @@ import { getCollection } from 'astro:content';
 import {
   ArrowRight,
   BookOpen,
-  GitFork,
   Mail,
   Sparkles,
 } from '@lucide/astro';
 import GitHubActivity from '../components/GitHubActivity.astro';
+import GitHubIcon from '../components/GitHubIcon.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { SITE_EMAIL, SITE_GITHUB, SITE_GITHUB_USERNAME } from '../consts';
@@ -72,7 +72,7 @@ const topics = ['小而美的应用', 'Self-hosted', 'Local-First', '阅读体�
             aria-label="GitHub"
             title="GitHub"
           >
-            <GitFork size={20} stroke-width={2.2} />
+            <GitHubIcon size={22} />
           </a>
           <a
             class="inline-grid size-12 place-items-center rounded-xl border-2 border-hero-ink/15 bg-white/50 text-hero-ink no-underline transition-[background-color,transform] duration-150 hover:-translate-y-[3px] hover:-rotate-3 hover:bg-white/80 dark:bg-[rgb(16_23_38/0.38)] dark:hover:bg-[rgb(16_23_38/0.7)]"

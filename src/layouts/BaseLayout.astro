@@ -1,5 +1,6 @@
 ---
-import { GitFork, Mail } from '@lucide/astro';
+import { Mail } from '@lucide/astro';
+import GitHubIcon from '../components/GitHubIcon.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import {
   SITE_AUTHOR,
@@ -86,7 +87,7 @@ const isHome = Astro.url.pathname === '/';
               aria-label="GitHub"
               title="GitHub"
             >
-              <GitFork size={20} stroke-width={2} />
+              <GitHubIcon size={21} />
             </a>
             <a
               class="inline-grid size-10 place-items-center rounded-full bg-white/8 text-footer-foreground no-underline transition hover:-translate-y-[3px] hover:-rotate-4 hover:bg-white/16"

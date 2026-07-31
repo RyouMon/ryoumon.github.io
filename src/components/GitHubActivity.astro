@@ -1,5 +1,6 @@
 ---
-import { ExternalLink, GitFork } from '@lucide/astro';
+import { ExternalLink } from '@lucide/astro';
+import GitHubIcon from './GitHubIcon.astro';
 import SectionHeading from './SectionHeading.astro';
 import {
   getGitHubContributions,
@@ -73,7 +74,7 @@ const chartLabel = calendar
     href={profileURL}
     actionLabel={`@${username}`}
   >
-    <ExternalLink slot="action-icon" size={17} stroke-width={2.2} />
+    <GitHubIcon slot="action-icon" size={18} />
   </SectionHeading>
 
   <div
@@ -87,7 +88,7 @@ const chartLabel = calendar
         class="grid size-[3.6rem] -rotate-4 place-items-center rounded-[17px] bg-foreground text-surface shadow-[0_9px_24px_color-mix(in_srgb,var(--foreground)_18%,transparent)] max-[480px]:size-12 max-[480px]:rounded-[14px]"
         aria-hidden="true"
       >
-        <GitFork size={27} stroke-width={2} />
+        <GitHubIcon size={29} />
       </div>
       <div class="grid grid-cols-[auto_auto] items-baseline gap-x-[0.45rem]">
         <span
@@ -172,7 +173,7 @@ const chartLabel = calendar
       class="group relative z-1 mt-[1.2rem] inline-flex items-center gap-[0.45rem] text-[0.82rem] font-[790] text-accent-strong no-underline"
       href={profileURL}
     >
-      <GitFork size={18} stroke-width={2.1} />
+      <GitHubIcon size={18} />
       查看完整 GitHub 主页
       <ExternalLink
         class="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
