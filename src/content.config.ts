@@ -37,6 +37,7 @@ const projects = defineCollection({
       )
       .default([]),
     repository: z.string().optional(),
+    detailLayout: z.enum(['default', 'whitenoise']).default('default'),
   }),
 });
 

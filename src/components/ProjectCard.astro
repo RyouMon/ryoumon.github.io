@@ -11,6 +11,7 @@ const { project, index = 0 } = Astro.props;
 const projectNumber = String(index + 1).padStart(2, '0');
 const isReader = project.id === 'myreader';
 const isWhiteNoise = project.id === 'whitenoise';
+const projectIcon = project.data.icon;
 const cardImage = project.data.cardImage;
 const cardImageDark = project.data.cardImageDark;
 ---
@@ -18,10 +19,12 @@ const cardImageDark = project.data.cardImageDark;
 <li class="min-w-0" data-project-card={project.id}>
   <a
     class:list={[
-      'group relative flex min-h-[440px] flex-col overflow-hidden rounded-[28px] border border-border/70 bg-surface-raised text-foreground no-underline shadow-card transition-[box-shadow,transform] duration-[220ms] hover:-translate-y-[7px] hover:-rotate-[0.35deg] hover:shadow-card-lift min-[721px]:grid min-[721px]:min-h-[380px] min-[721px]:grid-cols-2 max-tablet:min-h-[410px] max-nav:min-h-[430px] max-nav:rounded-[23px]',
+      'group relative flex min-h-[440px] flex-col overflow-hidden rounded-[28px] border border-border/70 no-underline shadow-card transition-[box-shadow,transform] duration-[220ms] hover:-translate-y-[7px] hover:-rotate-[0.35deg] hover:shadow-card-lift min-[721px]:grid min-[721px]:min-h-[380px] min-[721px]:grid-cols-2 max-tablet:min-h-[410px] max-nav:min-h-[430px] max-nav:rounded-[23px]',
       {
+        'bg-surface-raised text-foreground': !isReader && !isWhiteNoise,
+        'border-transparent bg-[#b9582c] text-white': isReader,
         'border-transparent bg-[radial-gradient(circle_at_95%_0%,rgb(255_255_255/0.18),transparent_30%),linear-gradient(145deg,#5144e4,#7868f5)] text-white':
-          isReader || isWhiteNoise,
+          isWhiteNoise,
       },
     ]}
     href={`/projects/${project.id}/`}
@@ -31,6 +34,18 @@ const cardImageDark = project.data.cardImageDark;
         <span>{projectNumber}</span>
       </div>
       <div class="mt-5 flex min-w-0 items-center gap-[0.8rem]">
+        {
+          projectIcon && (
+            <img
+              class="size-12 shrink-0 rounded-[22%] border border-white/22 shadow-[0_9px_20px_rgb(28_22_54/0.18)]"
+              src={projectIcon}
+              alt=""
+              width="1024"
+              height="1024"
+              loading="lazy"
+            />
+          )
+        }
         <h3
           class="m-0 text-[clamp(1.75rem,3.5vw,2.5rem)] leading-[1.05] font-[850] tracking-[-0.055em]"
         >

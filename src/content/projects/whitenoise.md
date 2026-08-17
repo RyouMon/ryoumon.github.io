@@ -19,6 +19,7 @@ url: https://apps.apple.com/cn/app/id6504743517
 urlLabel: 在 App Store 下载
 qrCode: /images/projects/whitenoise-app-store-qr.png
 qrCodeAlt: WhiteNoise 白噪声 App Store 安装二维码
+detailLayout: whitenoise
 screenshots:
   - src: /images/projects/whitenoise-rain-mix.jpg
     alt: WhiteNoise 倾盆大雨混音界面

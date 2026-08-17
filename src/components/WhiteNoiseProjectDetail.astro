@@ -22,15 +22,13 @@ const { Content } = await render(project);
     返回项目
   </a>
 
-  <header
-    class="overflow-hidden rounded-[30px] border border-accent/20 bg-surface-raised bg-[radial-gradient(circle_at_100%_0%,color-mix(in_srgb,var(--accent)_14%,transparent),transparent_34%)] p-[clamp(1.5rem,4vw,2.7rem)] shadow-card max-nav:rounded-3xl max-nav:p-[1.35rem]"
-  >
+  <header>
     <div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-5 max-[600px]:grid-cols-1">
       <div class="flex min-w-0 items-center gap-5 max-[480px]:items-start max-[480px]:gap-4">
         {
           project.data.icon && (
             <img
-              class="size-24 shrink-0 rounded-[23%] border border-accent/20 shadow-[0_14px_30px_color-mix(in_srgb,var(--foreground)_14%,transparent)] max-tablet:size-20 max-[480px]:size-16"
+              class="size-24 shrink-0 rounded-[23%] max-tablet:size-20 max-[480px]:size-16"
               src={project.data.icon}
               alt=""
               width="1024"
@@ -49,7 +47,7 @@ const { Content } = await render(project);
               {project.data.title}
             </h1>
             <span
-              class="inline-flex rounded-full border border-accent/25 bg-accent-soft px-[0.65rem] py-[0.3rem] text-[0.72rem] font-[780] whitespace-nowrap text-accent-strong"
+              class="inline-flex text-[0.78rem] font-[760] whitespace-nowrap text-muted-foreground"
             >
               {project.data.status}
             </span>
@@ -63,7 +61,7 @@ const { Content } = await render(project);
       {
           project.data.url && (
             <a
-              class="inline-flex min-h-12 items-center justify-center gap-[0.45rem] self-start rounded-xl bg-accent px-4 py-[0.58rem] text-[0.86rem] font-[820] whitespace-nowrap text-white no-underline shadow-[0_10px_22px_color-mix(in_srgb,var(--accent)_22%,transparent)] hover:bg-accent-strong max-[600px]:justify-self-start max-[480px]:w-full"
+              class="inline-flex min-h-12 items-center justify-center gap-[0.45rem] self-start rounded-xl bg-accent px-4 py-[0.58rem] text-[0.86rem] font-[820] whitespace-nowrap text-white no-underline transition-colors hover:bg-accent-strong max-[600px]:justify-self-start max-[480px]:w-full"
               href="#whitenoise-install"
               aria-label={`前往安装 ${project.data.title}`}
             >
@@ -92,7 +90,7 @@ const { Content } = await render(project);
       >
         {
           project.data.screenshots.map((screenshot, index) => (
-            <figure class="m-0 shrink-0 basis-[clamp(16rem,34vw,24rem)] snap-start overflow-hidden rounded-[22px] border border-accent/20 bg-accent-soft shadow-[0_10px_24px_color-mix(in_srgb,var(--foreground)_11%,transparent)] max-[480px]:basis-[min(72vw,15.5rem)]">
+            <figure class="m-0 shrink-0 basis-[clamp(16rem,34vw,24rem)] snap-start overflow-hidden rounded-[22px] border border-border max-[480px]:basis-[min(72vw,15.5rem)]">
               <img
                 class="block h-auto w-full"
                 src={screenshot.src}
