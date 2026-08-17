@@ -14,7 +14,7 @@ const isActive = (href: string) =>
 const navLinkClass =
   'block rounded-full px-3 py-2 text-[0.93rem] font-[720] no-underline transition-[color,background-color,transform] duration-150 hover:-translate-y-px hover:bg-accent-soft hover:text-accent-strong';
 const iconButtonClass =
-  'inline-grid size-[2.45rem] cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 text-foreground transition-[color,background-color,transform] duration-150 hover:-rotate-6 hover:bg-accent-soft hover:text-accent-strong';
+  'size-[2.45rem] cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 text-foreground transition-[color,background-color,transform] duration-150 hover:-rotate-6 hover:bg-accent-soft hover:text-accent-strong';
 ---
 
 <header
@@ -55,7 +55,7 @@ const iconButtonClass =
         }
         <li>
           <button
-            class={iconButtonClass}
+            class:list={[iconButtonClass, 'inline-grid']}
             type="button"
             data-theme-toggle
             aria-label="切换深浅主题"
@@ -121,22 +121,25 @@ const iconButtonClass =
 </header>
 
 <style>
-  [data-site-header][data-menu-open="true"] [data-mobile-navigation] {
-    display: block;
-  }
+  @media (max-width: 45rem) {
+    [data-site-header][data-menu-open="true"] [data-mobile-navigation] {
+      display: block;
+    }
 
-  [data-site-header][data-menu-open="true"] [data-menu-icon-open] {
-    display: none;
-  }
+    [data-site-header][data-menu-open="true"] [data-menu-icon-open] {
+      display: none;
+    }
 
-  [data-site-header][data-menu-open="true"] [data-menu-icon-close] {
-    display: block;
+    [data-site-header][data-menu-open="true"] [data-menu-icon-close] {
+      display: block;
+    }
   }
 </style>
 
 <script>
   const header = document.querySelector<HTMLElement>('[data-site-header]');
   const menuToggle = header?.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const mobileViewport = window.matchMedia('(max-width: 45rem)');
 
   const setMenuOpen = (open: boolean) => {
     if (!header || !menuToggle) return;
@@ -147,7 +150,16 @@ const iconButtonClass =
   };
 
   menuToggle?.addEventListener('click', () => {
+    if (!mobileViewport.matches) {
+      setMenuOpen(false);
+      return;
+    }
+
     setMenuOpen(header?.dataset.menuOpen !== 'true');
+  });
+
+  mobileViewport.addEventListener('change', (event) => {
+    if (!event.matches) setMenuOpen(false);
   });
 
   header?.querySelectorAll('[data-mobile-link]').forEach((link) => {
