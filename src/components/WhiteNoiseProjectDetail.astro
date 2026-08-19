@@ -1,6 +1,6 @@
 ---
-import { ArrowDown } from '@lucide/astro';
-import { render, type CollectionEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import DeviceFrame from './DeviceFrame.astro';
 import ProjectInstallCard from './ProjectInstallCard.astro';
 
 interface Props {
@@ -8,116 +8,704 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { Content } = await render(project);
+const heroIphoneImage = project.data.heroIphoneImage ?? project.data.cardImage;
+const heroIpadImage = project.data.heroIpadImage;
+const heroKeywords = ['降噪、', '助眠、', '专注'];
 ---
 
-<article class="w-full">
-  <a
-    class="group mb-[1.4rem] inline-flex items-center gap-[0.45rem] text-[0.88rem] font-[720] text-muted-foreground no-underline hover:text-accent-strong max-[480px]:mb-4"
-    href="/projects/"
-  >
-    <span class="transition-transform duration-150 group-hover:-translate-x-1" aria-hidden="true">
-      ←
-    </span>
+<article class="wn-page w-full" data-product-story>
+  <a class="wn-back" href="/projects/">
+    <span aria-hidden="true">←</span>
     返回项目
   </a>
 
-  <header>
-    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-5 max-[600px]:grid-cols-1">
-      <div class="flex min-w-0 items-center gap-5 max-[480px]:items-start max-[480px]:gap-4">
-        {
-          project.data.icon && (
-            <img
-              class="size-24 shrink-0 rounded-[23%] max-tablet:size-20 max-[480px]:size-16"
-              src={project.data.icon}
-              alt=""
-              width="1024"
-              height="1024"
-              fetchpriority="high"
-            />
-          )
-        }
-        <div class="min-w-0">
-          <div
-            class="flex flex-wrap items-center gap-x-[0.9rem] gap-y-[0.55rem] max-[480px]:grid max-[480px]:justify-items-start"
-          >
-            <h1
-              class="m-0 text-[clamp(2.5rem,6vw,4.15rem)] leading-none font-[870] tracking-[-0.065em] text-foreground max-[480px]:text-[clamp(2.15rem,11vw,2.8rem)]"
-            >
-              {project.data.title}
-            </h1>
-            <span
-              class="inline-flex text-[0.78rem] font-[760] whitespace-nowrap text-muted-foreground"
-            >
-              {project.data.status}
-            </span>
-          </div>
-          <p class="mt-[0.7rem] mb-0 max-w-[42rem] text-[0.93rem] leading-[1.72] text-muted-foreground">
-            {project.data.description}
-          </p>
-        </div>
-      </div>
+  <header class="wn-hero wn-reveal" data-reveal>
+    <div class="wn-hero-copy">
+      <h1>{heroKeywords.map((keyword) => <span>{keyword}</span>)}</h1>
+      <p>提供多种可自由组合的循环环境声，用于屏蔽干扰、辅助睡眠和保持专注。</p>
 
-      {
+      <div class="wn-download-row">
+        <div class="wn-identity">
+          {
+            project.data.icon && (
+              <img
+                class="wn-icon"
+                src={project.data.icon}
+                alt=""
+                width="1024"
+                height="1024"
+                fetchpriority="high"
+              />
+            )
+          }
+          <strong>{project.data.title}</strong>
+        </div>
+
+        {
           project.data.url && (
-            <a
-              class="inline-flex min-h-12 items-center justify-center gap-[0.45rem] self-start rounded-xl bg-accent px-4 py-[0.58rem] text-[0.86rem] font-[820] whitespace-nowrap text-white no-underline transition-colors hover:bg-accent-strong max-[600px]:justify-self-start max-[480px]:w-full"
-              href="#whitenoise-install"
-              aria-label={`前往安装 ${project.data.title}`}
-            >
-              下载
-              <ArrowDown size={18} stroke-width={2.3} />
-            </a>
+            <div class="wn-app-store-action">
+              <a
+                class="wn-app-store-badge"
+                href={project.data.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${project.data.urlLabel ?? '在 App Store 下载'}：${project.data.title}`}
+              >
+                <img
+                  src="/images/app-store/download-on-the-app-store.svg"
+                  alt=""
+                  width="120"
+                  height="40"
+                />
+              </a>
+              {
+                project.data.qrCode && (
+                  <div class="wn-app-store-qr" aria-hidden="true">
+                    <img src={project.data.qrCode} alt="" width="512" height="512" />
+                    <span>扫码下载</span>
+                  </div>
+                )
+              }
+            </div>
           )
         }
+      </div>
     </div>
 
-    <section
-      class="mt-9 border-t border-border pt-6"
-      aria-labelledby="whitenoise-screenshot-title"
-    >
-      <h2
-        id="whitenoise-screenshot-title"
-        class="m-0 text-base font-extrabold tracking-[-0.02em]"
-      >
-        应用截图
-      </h2>
-      <div
-        class="mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-[0.45rem] [overscroll-behavior-inline:contain] [scroll-padding-inline:0] [scrollbar-color:color-mix(in_srgb,var(--accent)_35%,transparent)_transparent] [scrollbar-width:thin] [-webkit-overflow-scrolling:touch]"
-        role="region"
-        aria-label="WhiteNoise 应用截图，可横向滚动"
-        tabindex="0"
-      >
-        {
-          project.data.screenshots.map((screenshot, index) => (
-            <figure class="m-0 shrink-0 basis-[clamp(16rem,34vw,24rem)] snap-start overflow-hidden rounded-[22px] border border-border max-[480px]:basis-[min(72vw,15.5rem)]">
-              <img
-                class="block h-auto w-full"
-                src={screenshot.src}
-                alt={screenshot.alt}
-                width="830"
-                height="1800"
-                loading={index === 0 ? 'eager' : 'lazy'}
-                fetchpriority={index === 0 ? 'high' : undefined}
-              />
-            </figure>
-          ))
-        }
-      </div>
-    </section>
+    {
+      heroIphoneImage && heroIpadImage && (
+        <figure class="wn-hero-media" aria-label="WhiteNoise iPhone 与 iPad 界面">
+          <div class="wn-device-ipad">
+            <DeviceFrame
+              kind="ipad"
+              orientation="landscape"
+              src={heroIpadImage}
+              alt="WhiteNoise iPad 倾盆大雨场景选择界面"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+          <div class="wn-device-iphone">
+            <DeviceFrame
+              kind="iphone"
+              src={heroIphoneImage}
+              alt="WhiteNoise iPhone 倾盆大雨场景选择界面"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+        </figure>
+      )
+    }
   </header>
 
-  <div class="prose mt-[clamp(3.5rem,7vw,5rem)] w-full">
-    <Content />
-  </div>
+  {
+    project.data.showcase.map((item, index) => (
+      <section
+        class:list={[
+          'wn-focus',
+          'wn-reveal',
+          index % 2 === 1 && 'wn-focus-reverse',
+          (item.label === 'iCloud 同步' || item.label === '允许与其他应用一起播放') &&
+            'wn-focus-illustrated',
+        ]}
+        data-reveal
+        aria-labelledby={`whitenoise-focus-${index}`}
+      >
+        <div class="wn-focus-copy">
+          <h2 id={`whitenoise-focus-${index}`}>{item.title}</h2>
+          <p>{item.description}</p>
+        </div>
+
+        <figure
+          class:list={[
+            'wn-focus-media',
+            (item.label === 'iCloud 同步' || item.label === '允许与其他应用一起播放') &&
+              'wn-focus-media-composite',
+          ]}
+        >
+          {
+            item.label === 'iCloud 同步' || item.label === '允许与其他应用一起播放' ? (
+              <div
+                class:list={[
+                  'wn-device-story',
+                  item.label === 'iCloud 同步'
+                    ? 'wn-device-story-icloud'
+                    : 'wn-device-story-coexist',
+                ]}
+              >
+                <div class="wn-story-device wn-story-device-primary">
+                  <img
+                    src={item.iphoneSrc}
+                    alt={
+                      item.label === 'iCloud 同步'
+                        ? 'WhiteNoise iPhone 场景列表'
+                        : '虚拟音乐播放器正在播放海边夜曲'
+                    }
+                    width={item.label === 'iCloud 同步' ? '389' : '483'}
+                    height={item.label === 'iCloud 同步' ? '789' : '913'}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+
+                <div class="wn-story-symbol" aria-hidden="true">
+                  <img
+                    src={
+                      item.label === 'iCloud 同步'
+                        ? '/images/projects/whitenoise-icloud-symbol-v3.svg'
+                        : '/images/projects/whitenoise-coexist-symbol-layer.png'
+                    }
+                    alt=""
+                    width={item.label === 'iCloud 同步' ? '96' : '333'}
+                    height={item.label === 'iCloud 同步' ? '84' : '224'}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+
+                <div class="wn-story-device wn-story-device-secondary">
+                  <img
+                    src={
+                      item.label === 'iCloud 同步'
+                        ? '/images/projects/whitenoise-icloud-ipad.png'
+                        : '/images/projects/whitenoise-coexist-whitenoise-iphone.png'
+                    }
+                    alt={
+                      item.label === 'iCloud 同步'
+                        ? 'WhiteNoise iPad 倾盆大雨场景选择界面'
+                        : 'WhiteNoise iPhone 倾盆大雨场景播放界面'
+                    }
+                    width={item.label === 'iCloud 同步' ? '928' : '481'}
+                    height={item.label === 'iCloud 同步' ? '691' : '913'}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+            ) : (
+              <div class="wn-focus-device">
+                <DeviceFrame
+                  kind="iphone"
+                  src={item.iphoneSrc}
+                  alt={item.alt}
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                />
+              </div>
+            )
+          }
+        </figure>
+      </section>
+    ))
+  }
 
   {
     project.data.url && project.data.qrCode && (
       <ProjectInstallCard
         project={project}
         id="whitenoise-install"
-        class="mt-[clamp(5rem,9vw,7rem)] scroll-mt-28"
+        class="wn-install scroll-mt-28"
       />
     )
   }
 </article>
+
+<style>
+  .wn-page {
+    --wn-font-display-en:
+      "SF Pro Display", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --wn-font-display-zh:
+      "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue",
+      Helvetica, Arial, sans-serif;
+    --wn-font-text-zh:
+      "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC", "Helvetica Neue",
+      Helvetica, Arial, sans-serif;
+    position: relative;
+    font-family: var(--wn-font-text-zh);
+  }
+
+  .wn-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--muted-foreground);
+    font-size: 0.88rem;
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  .wn-back span {
+    transition: transform 160ms ease;
+  }
+
+  .wn-back:hover {
+    color: var(--accent-strong);
+  }
+
+  .wn-back:hover span {
+    transform: translateX(-0.25rem);
+  }
+
+  .wn-hero {
+    min-height: calc(100svh - 5rem);
+    padding-block: clamp(2.25rem, 4vw, 3.5rem) clamp(5rem, 10vw, 8rem);
+    text-align: center;
+  }
+
+  .wn-hero-copy {
+    position: relative;
+    z-index: 5;
+    display: grid;
+    justify-items: center;
+    width: min(100%, 62rem);
+    margin-inline: auto;
+  }
+
+  .wn-identity {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex: 0 0 auto;
+  }
+
+  .wn-identity strong {
+    color: var(--foreground);
+    font-family: var(--wn-font-display-en);
+    font-size: 1.18rem;
+    font-weight: 650;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+
+  .wn-icon {
+    width: 3.7rem;
+    border-radius: 23%;
+  }
+
+  .wn-hero h1 {
+    max-width: none;
+    margin: clamp(1.75rem, 3.5vw, 2.75rem) 0 0;
+    color: var(--foreground);
+    font-family: var(--wn-font-display-zh);
+    font-size: clamp(2rem, 10.5vw, 7rem);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .wn-hero h1 span {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .wn-hero-copy > p {
+    max-width: 42rem;
+    margin: clamp(1.5rem, 3vw, 2.1rem) 0 0;
+    color: var(--muted-foreground);
+    font-size: clamp(1.08rem, 2vw, 1.34rem);
+    line-height: 1.65;
+    text-wrap: balance;
+  }
+
+  .wn-download-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1.25rem, 3vw, 2.25rem);
+    margin-top: clamp(1.7rem, 3vw, 2.25rem);
+  }
+
+  .wn-app-store-action {
+    position: relative;
+    z-index: 4;
+  }
+
+  .wn-app-store-badge {
+    display: inline-block;
+    line-height: 0;
+  }
+
+  .wn-app-store-badge img {
+    display: block;
+    width: auto;
+    height: 3.25rem;
+  }
+
+  .wn-app-store-badge:focus-visible {
+    border-radius: 0.35rem;
+    outline: 2px solid var(--accent-strong);
+    outline-offset: 0.45rem;
+  }
+
+  .wn-app-store-qr {
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    left: 50%;
+    display: grid;
+    width: 9.25rem;
+    padding: 0.55rem;
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    background: var(--background);
+    box-shadow: var(--shadow-lift);
+    color: var(--muted-foreground);
+    font-size: 0.72rem;
+    font-weight: 700;
+    gap: 0.35rem;
+    opacity: 0;
+    place-items: center;
+    pointer-events: none;
+    transform: translate(-50%, -0.35rem) scale(0.96);
+    transform-origin: top center;
+    transition:
+      opacity 160ms ease,
+      transform 180ms ease,
+      visibility 180ms;
+    visibility: hidden;
+  }
+
+  .wn-app-store-qr img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 0.65rem;
+  }
+
+  .wn-app-store-action:hover .wn-app-store-qr,
+  .wn-app-store-action:focus-within .wn-app-store-qr {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+    visibility: visible;
+  }
+
+  .wn-hero-media {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 64rem);
+    height: clamp(31rem, 52vw, 42rem);
+    margin: clamp(2.75rem, 5vw, 3.75rem) auto 0;
+    isolation: isolate;
+  }
+
+  .wn-hero-media > div {
+    position: absolute;
+  }
+
+  .wn-device-ipad {
+    top: 0;
+    right: 3%;
+    z-index: 1;
+    width: min(72%, 44rem);
+  }
+
+  .wn-device-iphone {
+    top: 10%;
+    left: 9%;
+    z-index: 2;
+    width: min(25%, 16rem);
+  }
+
+  .wn-focus {
+    display: grid;
+    min-height: calc(100svh - 5rem);
+    grid-template-columns: minmax(18rem, 0.78fr) minmax(18rem, 0.72fr);
+    align-items: center;
+    gap: clamp(3rem, 10vw, 8.5rem);
+    padding-block: clamp(5rem, 10vw, 8rem);
+  }
+
+  .wn-focus-reverse .wn-focus-copy {
+    order: 2;
+  }
+
+  .wn-focus-reverse .wn-focus-media {
+    order: 1;
+  }
+
+  .wn-focus-illustrated {
+    grid-template-columns: minmax(17rem, 0.7fr) minmax(23rem, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+
+  .wn-focus-illustrated.wn-focus-reverse {
+    grid-template-columns: minmax(23rem, 1fr) minmax(17rem, 0.7fr);
+  }
+
+  .wn-focus-copy h2 {
+    max-width: 8em;
+    margin: 0;
+    color: var(--foreground);
+    font-family: var(--wn-font-display-zh);
+    font-size: clamp(3rem, 6vw, 5.4rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.06;
+    text-wrap: balance;
+  }
+
+  .wn-focus-copy p {
+    max-width: 34rem;
+    margin: clamp(1.4rem, 3vw, 2rem) 0 0;
+    color: var(--muted-foreground);
+    font-size: clamp(1.02rem, 1.8vw, 1.22rem);
+    line-height: 1.8;
+    white-space: pre-line;
+  }
+
+  .wn-focus-media {
+    display: grid;
+    margin: 0;
+    place-items: center;
+  }
+
+  .wn-focus-media-composite {
+    width: 100%;
+  }
+
+  .wn-device-story {
+    --wn-device-shadow: rgb(28 30 48 / 0.22);
+    --wn-symbol-glow: color-mix(in srgb, var(--accent) 32%, transparent);
+    --wn-symbol-brightness: 0.74;
+    --wn-symbol-saturation: 1.35;
+    display: grid;
+    width: 100%;
+    align-items: end;
+    justify-content: center;
+    gap: clamp(0.65rem, 2vw, 1.35rem);
+    isolation: isolate;
+  }
+
+  .wn-device-story-icloud {
+    --wn-symbol-glow: rgb(55 126 255 / 0.38);
+    grid-template-columns:
+      minmax(0, 0.43fr)
+      clamp(2.35rem, 6vw, 4.4rem)
+      minmax(0, 1fr);
+  }
+
+  .wn-device-story-coexist {
+    max-width: 31rem;
+    grid-template-columns:
+      minmax(0, 1fr)
+      clamp(2.35rem, 6vw, 4.4rem)
+      minmax(0, 1fr);
+    margin-inline: auto;
+  }
+
+  :global(:root[data-theme="dark"]) .wn-device-story {
+    --wn-device-shadow: rgb(0 0 0 / 0.38);
+    --wn-symbol-glow: color-mix(in srgb, var(--accent) 72%, transparent);
+    --wn-symbol-brightness: 1.08;
+    --wn-symbol-saturation: 1.05;
+  }
+
+  :global(:root[data-theme="dark"]) .wn-device-story-icloud {
+    --wn-symbol-glow: rgb(65 139 255 / 0.72);
+  }
+
+  .wn-story-device {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+  }
+
+  .wn-story-device::after {
+    position: absolute;
+    right: 5%;
+    bottom: -2.5%;
+    left: 5%;
+    z-index: -1;
+    height: 7%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 44%, var(--wn-device-shadow), transparent 70%);
+    content: "";
+    filter: blur(clamp(0.3rem, 1vw, 0.72rem));
+    opacity: 0.9;
+    pointer-events: none;
+  }
+
+  .wn-device-story-coexist .wn-story-device::after {
+    right: -4%;
+    bottom: -3.5%;
+    left: -4%;
+    height: 10%;
+    background: radial-gradient(ellipse at 50% 36%, var(--wn-device-shadow), transparent 66%);
+  }
+
+  .wn-story-device img,
+  .wn-story-symbol img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .wn-story-device img {
+    filter: drop-shadow(0 0.72rem 0.72rem var(--wn-device-shadow));
+  }
+
+  .wn-story-symbol {
+    z-index: 2;
+    align-self: center;
+    min-width: 0;
+  }
+
+  .wn-story-symbol img {
+    filter:
+      brightness(var(--wn-symbol-brightness)) saturate(var(--wn-symbol-saturation))
+      drop-shadow(0 0 0.32rem var(--wn-symbol-glow))
+      drop-shadow(0 0 0.85rem var(--wn-symbol-glow));
+  }
+
+  .wn-device-story-icloud .wn-story-device-primary {
+    align-self: end;
+  }
+
+  .wn-device-story-icloud .wn-story-device-secondary {
+    align-self: end;
+    margin-bottom: 2.5%;
+  }
+
+  .wn-focus-device {
+    width: min(100%, 21rem, 36.9svh);
+  }
+
+  .wn-install {
+    margin-top: clamp(5rem, 10vw, 8rem);
+  }
+
+  [data-product-story][data-enhanced='true'] .wn-reveal > .wn-hero-copy,
+  [data-product-story][data-enhanced='true'] .wn-reveal > .wn-hero-media,
+  [data-product-story][data-enhanced='true'] .wn-reveal > .wn-focus-copy,
+  [data-product-story][data-enhanced='true'] .wn-reveal > .wn-focus-media {
+    opacity: 0;
+    transform: translateY(2.4rem);
+    transition:
+      opacity 700ms ease,
+      transform 850ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  [data-product-story][data-enhanced='true'] .wn-reveal > .wn-hero-media,
+  [data-product-story][data-enhanced='true'] .wn-reveal > .wn-focus-media {
+    transform: translateY(2.4rem) scale(0.97);
+    transition-delay: 90ms;
+  }
+
+  [data-product-story][data-enhanced='true'] .wn-reveal[data-visible='true'] > .wn-hero-copy,
+  [data-product-story][data-enhanced='true'] .wn-reveal[data-visible='true'] > .wn-hero-media,
+  [data-product-story][data-enhanced='true'] .wn-reveal[data-visible='true'] > .wn-focus-copy,
+  [data-product-story][data-enhanced='true'] .wn-reveal[data-visible='true'] > .wn-focus-media {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  @media (max-width: 50rem) {
+    .wn-hero {
+      padding-block: 3.25rem 5.5rem;
+    }
+
+    .wn-icon {
+      width: 3.35rem;
+    }
+
+    .wn-download-row {
+      flex-wrap: wrap;
+    }
+
+    .wn-hero h1 {
+      font-size: clamp(2rem, 10.5vw, 5.25rem);
+    }
+
+    .wn-hero-media {
+      height: clamp(22rem, 91vw, 30rem);
+      margin-top: 3.8rem;
+    }
+
+    .wn-device-ipad {
+      right: 0;
+      width: 84%;
+    }
+
+    .wn-device-iphone {
+      top: 12%;
+      left: 1%;
+      width: 34%;
+    }
+
+    .wn-focus {
+      min-height: calc(100svh - 4rem);
+      grid-template-columns: 1fr;
+      gap: 2.75rem;
+      padding-block: clamp(4.5rem, 18vw, 6.5rem);
+    }
+
+    .wn-focus-illustrated,
+    .wn-focus-illustrated.wn-focus-reverse {
+      grid-template-columns: 1fr;
+    }
+
+    .wn-focus-reverse .wn-focus-copy,
+    .wn-focus-reverse .wn-focus-media {
+      order: initial;
+    }
+
+    .wn-focus-copy {
+      text-align: center;
+    }
+
+    .wn-focus-copy h2 {
+      max-width: none;
+      font-size: clamp(2.8rem, 12vw, 4rem);
+    }
+
+    .wn-focus-copy p {
+      margin-inline: auto;
+    }
+
+    .wn-focus-device {
+      width: min(76vw, 18rem, 27.2svh);
+    }
+
+    .wn-focus-media-composite {
+      width: min(100%, 36rem);
+      margin-inline: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wn-back span,
+    .wn-reveal > * {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-product-story]').forEach((story) => {
+    const sections = Array.from(story.querySelectorAll<HTMLElement>('[data-reveal]'));
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      sections.forEach((section) => (section.dataset.visible = 'true'));
+      return;
+    }
+
+    story.dataset.enhanced = 'true';
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          (entry.target as HTMLElement).dataset.visible = 'true';
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: '0px 0px -12% 0px', threshold: 0.14 },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+  });
+</script>

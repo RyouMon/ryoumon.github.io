@@ -22,12 +22,9 @@ const headingId = id ? `${id}-heading` : 'project-install-heading';
       aria-labelledby={headingId}
     >
       <div class="min-w-0">
-        <p class="m-0 text-[0.66rem] font-[850] tracking-[0.1em] text-accent-strong">
-          AVAILABLE ON THE APP STORE
-        </p>
         <h2
           id={headingId}
-          class="mt-[0.22rem] mb-0 text-[clamp(1.35rem,4vw,1.75rem)] leading-[1.15] tracking-[-0.04em]"
+          class="m-0 text-[clamp(1.35rem,4vw,1.75rem)] leading-[1.15] tracking-[-0.04em]"
         >
           安装 {project.data.title}
         </h2>
@@ -35,14 +32,25 @@ const headingId = id ? `${id}-heading` : 'project-install-heading';
           点击按钮前往 App Store，或使用 iPhone / iPad 相机扫描二维码。
         </p>
         <a
-          class="mt-[1.1rem] inline-flex min-h-[2.8rem] items-center gap-[0.45rem] rounded-[11px] bg-accent px-[0.95rem] py-2 text-[0.86rem] font-[820] text-white no-underline transition-colors hover:bg-accent-strong"
+          class="mt-[1.1rem] inline-block leading-none focus-visible:rounded-[0.35rem] focus-visible:outline-2 focus-visible:outline-offset-[0.45rem] focus-visible:outline-accent-strong"
           href={project.data.url}
           target="_blank"
           rel="noreferrer"
+          aria-label={`${project.data.urlLabel ?? '在 App Store 下载'}：${project.data.title}`}
         >
-          {project.data.urlLabel ?? '前往 App Store'}
-          <span aria-hidden="true">↗</span>
+          <img
+            class="block h-12 w-auto"
+            src="/images/app-store/download-on-the-app-store.svg"
+            alt=""
+            width="120"
+            height="40"
+            loading="lazy"
+          />
         </a>
+        <p class="mt-[1rem] mb-0 max-w-[34rem] text-[0.66rem] leading-[1.6] text-muted-foreground">
+          Apple 和 Apple 标志是 Apple Inc. 在美国及其他国家和地区注册的商标。App Store
+          是 Apple Inc. 的服务标志。
+        </p>
       </div>
 
       <a

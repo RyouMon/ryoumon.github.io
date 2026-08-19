@@ -1,0 +1,134 @@
+---
+interface Props {
+  kind: 'iphone' | 'ipad';
+  src: string;
+  alt: string;
+  orientation?: 'portrait' | 'landscape';
+  loading?: 'eager' | 'lazy';
+  fetchpriority?: 'high' | 'low' | 'auto';
+}
+
+const {
+  kind,
+  src,
+  alt,
+  orientation = 'portrait',
+  loading = 'lazy',
+  fetchpriority,
+} = Astro.props;
+const isIphone = kind === 'iphone';
+const frameSrc = isIphone
+  ? '/images/device-frames/iphone-15-pro-black-portrait.png'
+  : '/images/device-frames/ipad-pro-11-space-gray-portrait.png';
+const isLandscapeIpad = !isIphone && orientation === 'landscape';
+const screenshotWidth = isIphone ? 1206 : isLandscapeIpad ? 2420 : 1668;
+const screenshotHeight = isIphone ? 2622 : isLandscapeIpad ? 1668 : 2420;
+const frameWidth = isIphone ? 1419 : 1890;
+const frameHeight = isIphone ? 2796 : 2610;
+---
+
+<div
+  class="device-frame"
+  data-device-kind={kind}
+  data-device-orientation={orientation}
+>
+  <img
+    class="device-screen"
+    src={src}
+    alt={alt}
+    width={screenshotWidth}
+    height={screenshotHeight}
+    loading={loading}
+    fetchpriority={fetchpriority}
+  />
+  <img
+    class="device-shell"
+    src={frameSrc}
+    alt=""
+    width={frameWidth}
+    height={frameHeight}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    aria-hidden="true"
+  />
+</div>
+
+<style>
+  .device-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--device-aspect-ratio);
+    filter: drop-shadow(0 1.5rem 2rem rgb(0 0 0 / 0.2));
+    isolation: isolate;
+    container-type: inline-size;
+  }
+
+  .device-screen {
+    position: absolute;
+    top: var(--screen-top);
+    left: var(--screen-left);
+    z-index: 1;
+    width: var(--screen-width);
+    height: var(--screen-height);
+    border-radius: var(--screen-radius);
+    object-fit: cover;
+  }
+
+  .device-screen,
+  .device-shell {
+    display: block;
+  }
+
+  .device-shell {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  [data-device-kind='iphone'] {
+    --device-aspect-ratio: 1072 / 2090;
+    --screen-top: 3.6364%;
+    --screen-left: 8.3022%;
+    --screen-width: 83.4888%;
+    --screen-height: 92.7273%;
+    --screen-radius: 13.4% / 6.2%;
+  }
+
+  [data-device-kind='ipad'] {
+    --device-aspect-ratio: 1279 / 1770;
+    --screen-top: 4.2938%;
+    --screen-left: 6.5074%;
+    --screen-width: 87.0633%;
+    --screen-height: 91.4124%;
+    --screen-radius: 5.2% / 3.65%;
+  }
+
+  [data-device-kind='ipad'][data-device-orientation='landscape'] {
+    --device-aspect-ratio: 1770 / 1279;
+    --screen-top: 5.7672%;
+    --screen-left: 4.2146%;
+    --screen-width: 91.6092%;
+    --screen-height: 88.4127%;
+    --screen-radius: 0;
+  }
+
+  [data-device-kind='ipad'][data-device-orientation='landscape'] .device-shell {
+    inset: auto;
+    top: -19.1947%;
+    left: 13.8701%;
+    width: 72.2599%;
+    height: 138.3894%;
+    transform: rotate(90deg);
+    transform-origin: center;
+  }
+
+  [data-device-kind='ipad'][data-device-orientation='landscape'] .device-screen {
+    object-position: center top;
+  }
+
+</style>

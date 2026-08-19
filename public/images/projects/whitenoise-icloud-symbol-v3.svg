@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 84">
+  <defs>
+    <linearGradient id="icloud-sync-gradient" x1="0" y1="0" x2="96" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#25c2ff" />
+      <stop offset="0.52" stop-color="#1d82ff" />
+      <stop offset="1" stop-color="#3159ff" />
+    </linearGradient>
+  </defs>
+  <g
+    transform="translate(0 4)"
+    fill="none"
+    stroke="url(#icloud-sync-gradient)"
+    stroke-width="8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path
+      d="M29 45h38c8.3 0 15-6.7 15-15s-6.7-15-15-15c-1.6 0-3.2.3-4.7.8C59 6.8 53.9 1 48 1c-10.7 0-19.6 8.2-20.5 18.7-1.5-.6-3.1-.9-4.8-.9-6.5 0-11.7 5.2-11.7 11.7C11 38.1 17.2 45 25.3 45H29Z"
+    />
+    <path d="M16 65h64M25 56l-9 9 9 9M71 56l9 9-9 9" />
+  </g>
+</svg>

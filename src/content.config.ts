@@ -24,6 +24,8 @@ const projects = defineCollection({
     icon: z.string().optional(),
     cardImage: z.string().optional(),
     cardImageDark: z.string().optional(),
+    heroIphoneImage: z.string().optional(),
+    heroIpadImage: z.string().optional(),
     url: z.string().optional(),
     urlLabel: z.string().optional(),
     qrCode: z.string().optional(),
@@ -32,6 +34,17 @@ const projects = defineCollection({
       .array(
         z.object({
           src: z.string(),
+          alt: z.string(),
+        }),
+      )
+      .default([]),
+    showcase: z
+      .array(
+        z.object({
+          label: z.string(),
+          title: z.string(),
+          description: z.string(),
+          iphoneSrc: z.string(),
           alt: z.string(),
         }),
       )
